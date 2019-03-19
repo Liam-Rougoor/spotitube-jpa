@@ -44,16 +44,6 @@ class PlaylistResourceTest {
         playlistsStub.add(playlistStub);
     }
 
-
-    private void setupOKStubs(){
-
-        String token = "123";
-        Mockito.when(tokenDAOStub.tokenIsValid(token)).thenReturn(true);
-        Mockito.when(tokenDAOStub.getUserWithToken(token)).thenReturn("liam");
-        Mockito.when(playlistDAOStub.getAllPlaylists("liam")).thenReturn(playlistsStub);
-    }
-
-
     @Test
     void returnPlaylistsOverviewAndStatusOKIfTokenMatches() {
         String token = "123";
