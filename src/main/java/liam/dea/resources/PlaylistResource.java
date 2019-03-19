@@ -22,7 +22,11 @@ public class PlaylistResource {
         if (!tokenDAO.tokenIsValid(token)) {
             return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
         }
-        PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getPlaylistsOfUser("liam1"));
+        String user = tokenDAO.getUserWithToken(token);
+        if(user==null || user.isEmpty()){
+            throw new RuntimeException();
+        }
+        PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getAllPlaylists(user));
         return Response.ok(overview).build();
     }
 
@@ -39,4 +43,5 @@ public class PlaylistResource {
         }
         return Response.ok(new PlaylistOverview(playlist)).build();
     }
+
 }

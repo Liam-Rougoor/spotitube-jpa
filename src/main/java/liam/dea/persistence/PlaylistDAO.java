@@ -13,17 +13,35 @@ import java.util.List;
 
 public class PlaylistDAO {
 
-    public List<Playlist> getPlaylistsOfUser(String username) {
+//    public List<Playlist> getPlaylistsOfUser(String username) {
+//        try (
+//                Connection connection = new DatabaseConnectionFactory().createConnection();
+//                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_playlist WHERE user_playlist.user = ?");
+//        ) {
+//            preparedStatement.setString(1, username);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            List<Playlist> playlists = new ArrayList<>();
+//            while(resultSet.next()){
+//                Playlist playlist = getPlaylistByID(resultSet.getInt("playlist"));
+//                playlist.setOwner(username.equals(playlist.getUser()));
+//                playlists.add(playlist);
+//            }
+//            return  playlists;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    public List<Playlist> getAllPlaylists(String activeUser){
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_playlist WHERE user_playlist.user = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist");
         ) {
-            preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
             while(resultSet.next()){
-                Playlist playlist = getPlaylistByID(resultSet.getInt("playlist"));
-                playlist.setOwner(username.equals(playlist.getUser()));
+                Playlist playlist = getPlaylistByID(resultSet.getInt("id"));
+                playlist.setOwner(activeUser.equals(playlist.getUser()));
                 playlists.add(playlist);
             }
             return  playlists;
@@ -31,7 +49,7 @@ public class PlaylistDAO {
             throw new RuntimeException(e);
         }
     }
-    
+
     public Playlist getPlaylistByID(int id) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
