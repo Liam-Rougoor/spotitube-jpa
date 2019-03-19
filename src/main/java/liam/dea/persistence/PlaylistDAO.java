@@ -31,26 +31,7 @@ public class PlaylistDAO {
             throw new RuntimeException(e);
         }
     }
-
-    public String getOwnerOfPlaylist(int id){
-        try (
-                Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist WHERE id = ?");
-        ) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            String owner = "";
-            if(resultSet.next()){
-                owner = resultSet.getString("owner");
-            }
-            return owner;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-
+    
     public Playlist getPlaylistByID(int id) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();

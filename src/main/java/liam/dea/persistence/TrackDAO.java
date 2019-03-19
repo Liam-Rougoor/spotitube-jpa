@@ -19,7 +19,7 @@ public class TrackDAO {
             if(resultSet.next()){
                 track = new Track();
                 track.setId(id);
-                track.setAlbum("");
+                track.setAlbum(resultSet.getString("album"));
                 track.setDescription(resultSet.getString("description"));
                 track.setDuration((int)resultSet.getDouble("duration"));
                 track.setTitle(resultSet.getString("title"));

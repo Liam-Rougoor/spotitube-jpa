@@ -35,8 +35,7 @@ public class TokenDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             String token = "";
             if (resultSet.next()) {
-                //token = resultSet.getString("token");
-                token = "1234";
+                token = resultSet.getString("token");
             }
             return token;
         } catch (SQLException e) {

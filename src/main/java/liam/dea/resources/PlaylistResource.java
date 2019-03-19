@@ -19,9 +19,9 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
-//        if (!tokenDAO.tokenIsValid(token)) {
-//            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
-//        }
+        if (!tokenDAO.tokenIsValid(token)) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
+        }
         PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getPlaylistsOfUser("liam1"));
         return Response.ok(overview).build();
     }
@@ -30,9 +30,9 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") int id){
-//        if (!tokenDAO.tokenIsValid(token)) {
-//            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
-//        }
+        if (!tokenDAO.tokenIsValid(token)) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
+        }
         Playlist playlist = playlistDAO.getPlaylistByID(id);
         if(playlist == null){
             return Response.status(Response.Status.NOT_FOUND).entity("Playlist not found").build();

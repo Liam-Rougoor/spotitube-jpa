@@ -16,8 +16,6 @@ import javax.ws.rs.core.Response;
 @Path("/login")
 public class LoginResource {
 
-    private static Login activeLogin;
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,8 +30,5 @@ public class LoginResource {
 
     }
 
-    public static Login getActiveLogin() {
-        return activeLogin;
-    }
 
 }
