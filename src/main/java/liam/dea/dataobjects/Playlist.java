@@ -1,33 +1,36 @@
 package liam.dea.dataobjects;
 
+import liam.dea.persistence.PlaylistDAO;
 import liam.dea.resources.LoginResource;
-import liam.dea.stores.TrackStore;
-import liam.dea.stores.UserStore;
+import liam.dea.persistence.old.TrackStore;
+import liam.dea.persistence.old.UserStore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Playlist {
 
     private int id;
     private String name;
-    private User user;
+    private String user;
     private List<Track> tracks;
-    //private int length;
 
-    public Playlist(int id, String name, User user) {
+    public Playlist(int id, String name, String user) {
         this.id = id;
         this.name = name;
         this.user = user;
         tracks = TrackStore.getInstance().getTracks();
-//        length = 6000;
+    }
+
+    public Playlist(){
+        tracks = new ArrayList<>();
     }
 
     public Playlist(int id){
         this.id = id;
         this.name = "Playlist " + id;
-        this.user = UserStore.getInstance().getUserByName("liam");
+        this.user = "liam1";
         tracks = TrackStore.getInstance().getTracks();
-//        length = 6000;
     }
 
     public int getId() {
@@ -46,24 +49,37 @@ public class Playlist {
         this.name = name;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
     public boolean getOwner(){
-        return LoginResource.getActiveLogin().getUser().equals(user);
+        return true;
     }
+
 
     public List<Track> getTracks() {
         return tracks;
     }
 
-//    public int getLength(){
-//        return length;
-//    }
+    public void setTracks(List<Track> tracks){
+        this.tracks = tracks;
+    }
+
+    public void addTrack(Track track){
+        tracks.add(track);
+    }
+
+    public int getLength(){
+        int length = 0;
+        for(Track track : tracks){
+            length += track.getDuration();
+        }
+        return length;
+    }
 
 }

@@ -1,4 +1,4 @@
-package liam.dea.stores;
+package liam.dea.persistence.old;
 
 import liam.dea.dataobjects.Track;
 

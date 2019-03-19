@@ -7,11 +7,9 @@ import java.util.List;
 public class PlaylistsOverview {
 
     private List<Playlist> playlists;
-    private int length;
 
     public PlaylistsOverview(List<Playlist> playlists){
         this.playlists = playlists;
-        length = 600;
     }
 
     public List<Playlist> getPlaylists() {
@@ -19,6 +17,10 @@ public class PlaylistsOverview {
     }
 
     public int getLength() {
+        int length = 0;
+        for(Playlist playlist : playlists){
+            length += playlist.getLength();
+        }
         return length;
     }
 }

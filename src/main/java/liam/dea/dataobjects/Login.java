@@ -2,15 +2,15 @@ package liam.dea.dataobjects;
 
 public class Login {
 
-    private User user;
+    private String user;
     private String token;
 
-    public Login(User user, String token) {
+    public Login(String user, String token) {
         this.user = user;
         this.token = token;
     }
 
-    public User getUser(){
+    public String getUser(){
         return user;
     }
 

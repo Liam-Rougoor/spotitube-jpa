@@ -2,8 +2,9 @@ package liam.dea.resources;
 
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.PlaylistOverview;
-import liam.dea.stores.PlaylistStore;
+import liam.dea.persistence.PlaylistDAO;
 import liam.dea.dataobjects.PlaylistsOverview;
+import liam.dea.persistence.TokenDAO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,26 +13,27 @@ import javax.ws.rs.core.Response;
 @Path("/playlists")
 public class PlaylistResource {
 
+    private PlaylistDAO playlistDAO = new PlaylistDAO();
+    private TokenDAO tokenDAO = new TokenDAO();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
-        //TODO: DRY
-        if (!token.equals(LoginResource.getActiveLogin().getToken())) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
-        }
-        return Response.ok(new PlaylistsOverview(PlaylistStore.getInstance().getPlaylists())).build();
+//        if (!tokenDAO.tokenIsValid(token)) {
+//            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
+//        }
+        PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getPlaylistsOfUser("liam1"));
+        return Response.ok(overview).build();
     }
 
     @Path("{id}/tracks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") int id){
-        //TODO: DRY
-        if (!token.equals(LoginResource.getActiveLogin().getToken())) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
-        }
-        Playlist playlist = PlaylistStore.getInstance().getPlaylistByID(id);
+//        if (!tokenDAO.tokenIsValid(token)) {
+//            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
+//        }
+        Playlist playlist = playlistDAO.getPlaylistByID(id);
         if(playlist == null){
             return Response.status(Response.Status.NOT_FOUND).entity("Playlist not found").build();
         }

@@ -8,11 +8,9 @@ import java.util.List;
 public class PlaylistOverview {
 
     private Playlist playlist;
-    private int length;
 
     public PlaylistOverview(Playlist playlist) {
         this.playlist = playlist;
-        length = 500;
     }
 
     public Playlist getPlaylist() {
@@ -24,6 +22,6 @@ public class PlaylistOverview {
     }
 
     public int getLength() {
-        return length;
+        return playlist.getLength();
     }
 }
