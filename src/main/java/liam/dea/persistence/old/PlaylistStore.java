@@ -22,7 +22,7 @@ public class PlaylistStore {
     private PlaylistStore() {
         playlists = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            playlists.add(new Playlist(i));
+            //playlists.add(new Playlist(i));
         }
     }
 

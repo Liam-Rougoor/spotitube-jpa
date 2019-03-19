@@ -14,24 +14,25 @@ public class Playlist {
     private String name;
     private String user;
     private List<Track> tracks;
+    private boolean owner;
 
-    public Playlist(int id, String name, String user) {
-        this.id = id;
-        this.name = name;
-        this.user = user;
-        tracks = TrackStore.getInstance().getTracks();
-    }
+//    public Playlist(int id, String name, String user) {
+//        this.id = id;
+//        this.name = name;
+//        this.user = user;
+//        tracks = TrackStore.getInstance().getTracks();
+//    }
 
-    public Playlist(){
+    public Playlist() {
         tracks = new ArrayList<>();
     }
 
-    public Playlist(int id){
-        this.id = id;
-        this.name = "Playlist " + id;
-        this.user = "liam1";
-        tracks = TrackStore.getInstance().getTracks();
-    }
+//    public Playlist(int id) {
+//        this.id = id;
+//        this.name = "Playlist " + id;
+//        this.user = "liam1";
+//        tracks = TrackStore.getInstance().getTracks();
+//    }
 
     public int getId() {
         return id;
@@ -57,26 +58,29 @@ public class Playlist {
         this.user = user;
     }
 
-    public boolean getOwner(){
-        return true;
+    public boolean getOwner() {
+        return owner;
     }
 
+    public void setOwner(boolean owner) {
+        this.owner = owner;
+    }
 
     public List<Track> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<Track> tracks){
+    public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
     }
 
-    public void addTrack(Track track){
+    public void addTrack(Track track) {
         tracks.add(track);
     }
 
-    public int getLength(){
+    public int getLength() {
         int length = 0;
-        for(Track track : tracks){
+        for (Track track : tracks) {
             length += track.getDuration();
         }
         return length;

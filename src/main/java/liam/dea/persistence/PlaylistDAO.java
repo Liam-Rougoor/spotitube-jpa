@@ -22,7 +22,9 @@ public class PlaylistDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
             while(resultSet.next()){
-                playlists.add(getPlaylistByID(resultSet.getInt("playlist")));
+                Playlist playlist = getPlaylistByID(resultSet.getInt("playlist"));
+                playlist.setOwner(username.equals(playlist.getUser()));
+                playlists.add(playlist);
             }
             return  playlists;
         } catch (SQLException e) {
