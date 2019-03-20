@@ -46,9 +46,9 @@ class LoginResourceTest {
         Mockito.when(userDAOStub.getUserByNameAndPassword("liam","pass")).thenReturn(userStub);
 
         //Deze werkt wel
-        Mockito.when(tokenDAOStub.getLogin("liam")).thenReturn(new Login("liam", "1234-1234-1234"));
+        //Mockito.when(tokenDAOStub.getLogin("liam")).thenReturn(new Login("liam", "1234-1234-1234"));
 
-        User user = new User("liam", "pass");
+        User user = new User("liam", "pass", "liam");
         Response response = systemUnderTest.login(user);
         assertEquals(response.getStatusInfo(), Response.Status.CREATED);
 
@@ -59,21 +59,21 @@ class LoginResourceTest {
 
     @Test
     void returnsStatusUnauthorizedIfIncorrectUsernameButCorrectPasswordAreFilledIn(){
-        User user = new User("wrongUser", "pass");
+        User user = new User("wrongUser", "pass", "liam");
         Response response = systemUnderTest.login(user);
         assertEquals(response.getStatusInfo(), Response.Status.UNAUTHORIZED);
     }
 
     @Test
     void returnsStatusUnauthorizedIfCorrectUsernameAndIncorrectPasswordAreFilledIn() {
-        User user = new User("user", "wrongPass");
+        User user = new User("user", "wrongPass", "liam");
         Response response = systemUnderTest.login(user);
         assertEquals(response.getStatusInfo(), Response.Status.UNAUTHORIZED);
     }
 
     @Test
     void returnsStatusUnauthorizedIfIncorrectUsernameAndIncorrectPasswordAreFilledIn(){
-        User user = new User("wrongUser", "wrongPass");
+        User user = new User("wrongUser", "wrongPass", "liam");
         Response response = systemUnderTest.login(user);
         assertEquals(response.getStatusInfo(), Response.Status.UNAUTHORIZED);
     }

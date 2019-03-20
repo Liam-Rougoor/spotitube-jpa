@@ -2,7 +2,6 @@ package liam.dea.dataobjects;
 
 public class Login {
 
-    //TODO change to actual name
     private String user;
     private String token;
 

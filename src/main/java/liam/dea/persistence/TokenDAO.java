@@ -71,6 +71,6 @@ public class TokenDAO {
     }
 
     public Login getLogin(String user){
-        return new Login(user, getTokenOfUser(user));
+        return new Login(new UserDAO().getUserByName(user).getName(), getTokenOfUser(user));
     }
 }

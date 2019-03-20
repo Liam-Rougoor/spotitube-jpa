@@ -11,8 +11,8 @@ public class UserStore {
 
     private UserStore(){
         users = new ArrayList<>();
-        users.add(new User("liam", "pass"));
-        users.add(new User("liam1", "pass1"));
+        users.add(new User("liam", "pass", "liam"));
+        users.add(new User("liam1", "pass1", "liam"));
     }
 
     public static UserStore getInstance(){

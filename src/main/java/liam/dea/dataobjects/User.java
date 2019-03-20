@@ -2,14 +2,18 @@ package liam.dea.dataobjects;
 
 public class User {
 
-    //TODO add actual name too
-    private String user, password;
+    private String user, password, name;
 
     public User(){}
 
-    public User(String user, String password) {
+    public User(String user, String password, String name) {
         this.user = user;
         this.password = password;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUser() {
@@ -28,12 +32,16 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        User other = (User)obj;
-        if(other == null){
-            return false;
-        }
-        return other.user.equals(user) && other.password.equals(password);
+    public void setName(String name) {
+        this.name = name;
     }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//        User other = (User)obj;
+//        if(other == null){
+//            return false;
+//        }
+//        return other.user.equals(user) && other.password.equals(password);
+//    }
 }
