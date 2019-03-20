@@ -1,6 +1,8 @@
 package liam.dea.persistence;
 
 import com.mysql.cj.protocol.Resultset;
+import liam.dea.Exceptions.DatabaseItemNotFoundException;
+import liam.dea.Exceptions.InvalidCredentialsException;
 import liam.dea.dataobjects.User;
 
 import java.sql.Connection;
@@ -17,7 +19,10 @@ public class UserDAO {
         ) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return createUserDTO(resultSet);
+            if (resultSet.next()) {
+                return createUserDTO(resultSet);
+            }
+            throw new DatabaseItemNotFoundException("User " + name + " not found");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -31,20 +36,21 @@ public class UserDAO {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return createUserDTO(resultSet);
+            if (resultSet.next()) {
+                return createUserDTO(resultSet);
+            }
+            throw new InvalidCredentialsException();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     private User createUserDTO(ResultSet resultSet) throws SQLException {
-        User user = null;
-        if (resultSet.next()) {
-            user = new User();
-            user.setUser(resultSet.getString("username"));
-            user.setPassword(resultSet.getString("password"));
-            user.setName(resultSet.getString("name"));
-        }
+        User user = new User();
+        user.setUser(resultSet.getString("username"));
+        user.setPassword(resultSet.getString("password"));
+        user.setName(resultSet.getString("name"));
         return user;
     }
 }
+

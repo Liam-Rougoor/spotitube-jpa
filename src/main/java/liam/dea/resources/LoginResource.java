@@ -20,13 +20,10 @@ public class LoginResource {
     public Response login(User user) {
         UserDAO userDAO = new UserDAO();
         TokenDAO tokenDAO = new TokenDAO();
-        if(userDAO.getUserByNameAndPassword(user.getUser(), user.getPassword()) != null) {
-            return Response.status(Response.Status.CREATED).entity(tokenDAO.getLogin(user.getUser())).build();
-        }
-
-        return Response.status(Response.Status.UNAUTHORIZED).entity("Credentials are invalid").build();
-
+        User foundUser = userDAO.getUserByNameAndPassword(user.getUser(), user.getPassword());
+        return Response.status(Response.Status.CREATED).entity(tokenDAO.getLogin(foundUser.getUser())).build();
     }
-
-
 }
+
+
+
