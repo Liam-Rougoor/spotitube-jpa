@@ -1,10 +1,7 @@
 package liam.dea.resources;
 
-import liam.dea.dataobjects.Playlist;
-import liam.dea.dataobjects.PlaylistOverview;
-import liam.dea.dataobjects.Track;
+import liam.dea.dataobjects.*;
 import liam.dea.persistence.PlaylistDAO;
-import liam.dea.dataobjects.PlaylistsOverview;
 import liam.dea.persistence.TokenDAO;
 
 import javax.ws.rs.*;
@@ -55,7 +52,7 @@ public class PlaylistResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") int id){
         Playlist playlist = playlistDAO.getPlaylistByID(id, token);
-        return Response.ok(playlistDAO.getPlaylistOverview(playlist)).build();
+        return Response.ok(new TracksOverview(playlist)).build();
     }
 
     @Path("{id}/tracks")
@@ -64,7 +61,7 @@ public class PlaylistResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrack(@QueryParam("token") String token, @PathParam("id") int playlistId, Track track){
         Playlist playlist = playlistDAO.addTrack(playlistId, track, token);
-        return Response.status(Response.Status.CREATED).entity(playlistDAO.getPlaylistOverview(playlist)).build();
+        return Response.status(Response.Status.CREATED).entity(new TracksOverview(playlist)).build();
     }
 
 }

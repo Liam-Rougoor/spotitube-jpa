@@ -10,6 +10,10 @@ public class TracksOverview {
         this.tracks = tracks;
     }
 
+    public TracksOverview(Playlist playlist){
+        this.tracks = playlist.getTracks();
+    }
+
     public List<Track> getTracks() {
         return tracks;
     }

@@ -3,7 +3,6 @@ package liam.dea.persistence;
 import liam.dea.Exceptions.InvalidTokenException;
 import liam.dea.Exceptions.DatabaseItemNotFoundException;
 import liam.dea.dataobjects.Playlist;
-import liam.dea.dataobjects.PlaylistOverview;
 import liam.dea.dataobjects.PlaylistsOverview;
 import liam.dea.dataobjects.Track;
 
@@ -163,9 +162,9 @@ public class PlaylistDAO {
         return new PlaylistsOverview(getAllPlaylists(token));
     }
 
-    public PlaylistOverview getPlaylistOverview(Playlist playlist){
-        return new PlaylistOverview(playlist);
-    }
+//    public PlaylistOverview getPlaylistOverview(Playlist playlist){
+//        return new PlaylistOverview(playlist);
+//    }
 
     public Playlist addTrack(int playlistId, Track track, String token) {
         try (
