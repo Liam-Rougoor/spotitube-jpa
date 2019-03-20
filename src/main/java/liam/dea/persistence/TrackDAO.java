@@ -45,19 +45,21 @@ public class TrackDAO {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT t.id as id " +
-                                "FROM track t " +
-                                "LEFT OUTER JOIN playlist_track pt " +
-                                "ON t.id = pt.track " +
-                                "WHERE pt.playlist <> ? OR pt.playlist IS NULL ");
+                        "SELECT id " +
+                                "FROM track " +
+                                "WHERE id NOT IN (" +
+                                "SELECT id " +
+                                "FROM playlist_track " +
+                                "where playlist = ? " +
+                                ") ");
         ) {
-            if(!tokenDAO.tokenIsValid(token)){
+            if (!tokenDAO.tokenIsValid(token)) {
                 throw new InvalidTokenException();
             }
             preparedStatement.setInt(1, playlistID);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Track> tracks = new ArrayList<>();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 tracks.add(getTrackByID(resultSet.getInt("id")));
             }
             return tracks;
@@ -66,7 +68,7 @@ public class TrackDAO {
         }
     }
 
-    public TracksOverview createTracksOverview(List<Track> tracks){
+    public TracksOverview createTracksOverview(List<Track> tracks) {
         return new TracksOverview(tracks);
     }
 }
