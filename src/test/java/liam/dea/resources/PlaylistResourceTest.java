@@ -48,7 +48,7 @@ class PlaylistResourceTest {
     void returnPlaylistsOverviewAndStatusOKIfTokenMatches() {
         String token = "123";
         Mockito.when(tokenDAOStub.getUserWithToken(token)).thenReturn("liam");
-        Mockito.when(playlistDAOStub.getAllPlaylists("liam",token)).thenReturn(playlistsStub);
+        Mockito.when(playlistDAOStub.getAllPlaylists(token)).thenReturn(playlistsStub);
 
         Response response = systemUnderTest.getAllPlaylists(token);
         assertEquals(Response.Status.OK, response.getStatusInfo());

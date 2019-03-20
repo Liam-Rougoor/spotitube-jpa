@@ -1,8 +1,9 @@
 package liam.dea.persistence;
 
 import liam.dea.Exceptions.InvalidTokenException;
-import liam.dea.Exceptions.PlaylistNotFoundException;
+import liam.dea.Exceptions.DatabaseItemNotFoundException;
 import liam.dea.dataobjects.Playlist;
+import liam.dea.dataobjects.PlaylistOverview;
 import liam.dea.dataobjects.PlaylistsOverview;
 import liam.dea.dataobjects.Track;
 
@@ -74,7 +75,7 @@ public class PlaylistDAO {
                 playlist.setTracks(getTracksOfPlaylist(id));
                 return playlist;
             }
-            throw new PlaylistNotFoundException();
+            throw new DatabaseItemNotFoundException("Playlist " + id + " not found");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -99,11 +100,11 @@ public class PlaylistDAO {
     }
 
     public Playlist deletePlaylist(int id, String token) {
-        Playlist playlist = getPlaylistByID(id, token);
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement deletePlaylistStatement = connection.prepareStatement("DELETE FROM playlist WHERE id = ?");
         ) {
+            Playlist playlist = getPlaylistByID(id, token);
             deletePlaylistStatement.setInt(1, id);
             deletePlaylistStatement.execute();
             return playlist;
@@ -160,5 +161,33 @@ public class PlaylistDAO {
 
     public PlaylistsOverview getPlaylistsOverview(String token){
         return new PlaylistsOverview(getAllPlaylists(token));
+    }
+
+    public PlaylistOverview getPlaylistOverview(Playlist playlist){
+        return new PlaylistOverview(playlist);
+    }
+
+    public Playlist addTrack(int playlistId, Track track, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?)");
+        ) {
+            if (!tokenDAO.tokenIsValid(token)) {
+                throw new InvalidTokenException();
+            }
+
+            Playlist playlist = getPlaylistByID(playlistId, token);
+            Track foundTrack = new TrackDAO().getTrackByID(track.getId());
+
+            insertStatement.setInt(1, playlistId);
+            insertStatement.setInt(2, foundTrack.getId());
+            insertStatement.execute();
+
+            foundTrack.setOfflineAvailable(track.getOfflineAvailable());
+            playlist.addTrack(foundTrack);
+            return playlist;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
