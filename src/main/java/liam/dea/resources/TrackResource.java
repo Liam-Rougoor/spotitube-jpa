@@ -22,7 +22,7 @@ public class TrackResource {
 //        if (!token.equals(LoginResource.getActiveLogin().getToken())) {
 //            return Response.status(Response.Status.FORBIDDEN).entity("Invalid token").build();
 //        }
-        Playlist playlist = playlistDAO.getPlaylistByID(playlistID);
+        Playlist playlist = playlistDAO.getPlaylistByID(playlistID, token);
         if(playlist == null){
             return Response.status(Response.Status.NOT_FOUND).entity("Playlist not found").build();
         }

@@ -1,6 +1,6 @@
 package liam.dea.persistence;
 
-import com.mysql.cj.protocol.Resultset;
+import liam.dea.Exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.Track;
 
@@ -31,8 +31,9 @@ public class PlaylistDAO {
 //            throw new RuntimeException(e);
 //        }
 //    }
+    private TokenDAO tokenDAO = new TokenDAO();
 
-    public List<Playlist> getAllPlaylists(String activeUser){
+    public List<Playlist> getAllPlaylists(String activeUser, String token){
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist");
@@ -40,7 +41,7 @@ public class PlaylistDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
             while(resultSet.next()){
-                Playlist playlist = getPlaylistByID(resultSet.getInt("id"));
+                Playlist playlist = getPlaylistByID(resultSet.getInt("id"), token);
                 playlist.setOwner(activeUser.equals(playlist.getUser()));
                 playlists.add(playlist);
             }
@@ -50,12 +51,16 @@ public class PlaylistDAO {
         }
     }
 
-    public Playlist getPlaylistByID(int id) {
+    public Playlist getPlaylistByID(int id, String token) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement playlistStatement = connection.prepareStatement("SELECT * FROM playlist WHERE id = ?");
                 PreparedStatement playlistTrackStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
         ) {
+            if(!tokenDAO.tokenIsValid(token)){
+                throw new InvalidTokenException();
+            }
+
             playlistStatement.setInt(1, id);
             ResultSet playlistSet = playlistStatement.executeQuery();
 

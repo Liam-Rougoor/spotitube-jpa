@@ -1,5 +1,6 @@
 package liam.dea.persistence;
 
+import liam.dea.Exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Login;
 import liam.dea.dataobjects.User;
 
@@ -16,11 +17,10 @@ public class TokenDAO {
         ) {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
-            String username = "";
             if (resultSet.next()) {
-                username = resultSet.getString("user");
+                return resultSet.getString("user");
             }
-            return username;
+            throw new InvalidTokenException();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -47,9 +47,8 @@ class PlaylistResourceTest {
     @Test
     void returnPlaylistsOverviewAndStatusOKIfTokenMatches() {
         String token = "123";
-        Mockito.when(tokenDAOStub.tokenIsValid(token)).thenReturn(true);
         Mockito.when(tokenDAOStub.getUserWithToken(token)).thenReturn("liam");
-        Mockito.when(playlistDAOStub.getAllPlaylists("liam")).thenReturn(playlistsStub);
+        Mockito.when(playlistDAOStub.getAllPlaylists("liam",token)).thenReturn(playlistsStub);
 
         Response response = systemUnderTest.getAllPlaylists(token);
         assertEquals(Response.Status.OK, response.getStatusInfo());
@@ -65,8 +64,7 @@ class PlaylistResourceTest {
     @Test
     void returnPlaylistOverviewAndStatusOKIfTokenMatches() {
         String token = "123";
-        Mockito.when(tokenDAOStub.tokenIsValid(token)).thenReturn(true);
-        Mockito.when(playlistDAOStub.getPlaylistByID(1)).thenReturn(playlistStub);
+        Mockito.when(playlistDAOStub.getPlaylistByID(1, token)).thenReturn(playlistStub);
 
         Response response = systemUnderTest.getTracksFromPlaylist("123", 1);
         assertEquals(Response.Status.OK, response.getStatusInfo());
@@ -75,13 +73,5 @@ class PlaylistResourceTest {
         assertEquals(1, playlist.getId());
         assertEquals("liam1", playlist.getUser());
         assertEquals("Playlist", playlist.getName());
-    }
-
-    @Test
-    void returnStatusForbiddenIfTokenInvalid() {
-        String token = "123";
-        Mockito.when(tokenDAOStub.tokenIsValid(token)).thenReturn(false);
-        Response response = systemUnderTest.getAllPlaylists(token);
-        assertEquals(Response.Status.FORBIDDEN, response.getStatusInfo());
     }
 }
