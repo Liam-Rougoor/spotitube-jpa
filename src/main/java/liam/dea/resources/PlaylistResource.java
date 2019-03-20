@@ -19,9 +19,7 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
-        String user = tokenDAO.getUserWithToken(token);
-        PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getAllPlaylists(user, token));
-        return Response.ok(overview).build();
+        return Response.ok(playlistDAO.getPlaylistsOverview(token)).build();
     }
 
     @Path("{id}/tracks")
@@ -45,9 +43,7 @@ public class PlaylistResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createPlaylist(@QueryParam("token") String token, Playlist playlist){
         playlistDAO.addPlaylist(playlist, token);
-        String user = tokenDAO.getUserWithToken(token);
-        PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getAllPlaylists(user, token));
-        return Response.status(Response.Status.CREATED).entity(overview).build();
+        return Response.status(Response.Status.CREATED).entity(playlistDAO.getPlaylistsOverview(token)).build();
     }
 
     @Path("{id}")

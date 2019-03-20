@@ -3,6 +3,7 @@ package liam.dea.persistence;
 import liam.dea.Exceptions.InvalidTokenException;
 import liam.dea.Exceptions.PlaylistNotFoundException;
 import liam.dea.dataobjects.Playlist;
+import liam.dea.dataobjects.PlaylistsOverview;
 import liam.dea.dataobjects.Track;
 
 import java.sql.Connection;
@@ -34,7 +35,7 @@ public class PlaylistDAO {
 //    }
     private TokenDAO tokenDAO = new TokenDAO();
 
-    public List<Playlist> getAllPlaylists(String activeUser, String token) {
+    public List<Playlist> getAllPlaylists(String token) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist");
@@ -43,7 +44,7 @@ public class PlaylistDAO {
             List<Playlist> playlists = new ArrayList<>();
             while (resultSet.next()) {
                 Playlist playlist = getPlaylistByID(resultSet.getInt("id"), token);
-                playlist.setOwner(activeUser.equals(playlist.getUser()));
+                playlist.setOwner(tokenDAO.getUserWithToken(token).equals(playlist.getUser()));
                 playlists.add(playlist);
             }
             return playlists;
@@ -155,5 +156,9 @@ public class PlaylistDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public PlaylistsOverview getPlaylistsOverview(String token){
+        return new PlaylistsOverview(getAllPlaylists(token));
     }
 }
