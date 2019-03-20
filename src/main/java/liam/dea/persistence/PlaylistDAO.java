@@ -69,7 +69,6 @@ public class PlaylistDAO {
                 Playlist playlist = new Playlist();
                 playlist.setId(id);
                 playlist.setName(playlistSet.getString("name"));
-                UserDAO userDAO = new UserDAO();
                 playlist.setUser(playlistSet.getString("owner"));
                 playlist.setTracks(getTracksOfPlaylist(id));
                 return playlist;
@@ -106,6 +105,31 @@ public class PlaylistDAO {
         ) {
             deletePlaylistStatement.setInt(1, id);
             deletePlaylistStatement.execute();
+            return playlist;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Playlist addPlaylist(Playlist playlist, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist(name, owner) VALUES(?, ?)");
+                PreparedStatement lastInsertedIDStatement = connection.prepareStatement("SELECT LAST_INSERT_ID() AS id")
+        ) {
+            if (!tokenDAO.tokenIsValid(token)) {
+                throw new InvalidTokenException();
+            }
+            String user = tokenDAO.getUserWithToken(token);
+            insertStatement.setString(1, playlist.getName());
+            insertStatement.setString(2, user);
+            insertStatement.execute();
+            ResultSet playlistIDRow = lastInsertedIDStatement.executeQuery();
+            playlistIDRow.next();
+            Playlist addedPlaylist = new Playlist();
+            playlist.setName(playlist.getName());
+            playlist.setId(playlistIDRow.getInt("id"));
+            playlist.setUser(user);
             return playlist;
         } catch (SQLException e) {
             throw new RuntimeException(e);

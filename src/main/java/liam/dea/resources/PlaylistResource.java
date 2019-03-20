@@ -40,4 +40,14 @@ public class PlaylistResource {
         return Response.ok(playlist).build();
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createPlaylist(@QueryParam("token") String token, Playlist playlist){
+        Playlist createdPlaylist = playlistDAO.addPlaylist(playlist, token);
+
+        return Response.status(Response.Status.CREATED).entity(createdPlaylist).build();
+        //return Response.ok("Added playlist").build();
+    }
+
 }
