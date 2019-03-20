@@ -5,6 +5,7 @@ import liam.dea.Exceptions.DatabaseItemNotFoundException;
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.PlaylistsOverview;
 import liam.dea.dataobjects.Track;
+import liam.dea.dataobjects.TracksOverview;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -166,7 +167,7 @@ public class PlaylistDAO {
 //        return new PlaylistOverview(playlist);
 //    }
 
-    public Playlist addTrack(int playlistId, Track track, String token) {
+    public TracksOverview addTrack(int playlistId, Track track, String token) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?)");
@@ -184,7 +185,7 @@ public class PlaylistDAO {
 
             foundTrack.setOfflineAvailable(track.getOfflineAvailable());
             playlist.addTrack(foundTrack);
-            return playlist;
+            return new TracksOverview(playlist);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

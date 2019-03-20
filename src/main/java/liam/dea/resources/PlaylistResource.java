@@ -60,8 +60,8 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrack(@QueryParam("token") String token, @PathParam("id") int playlistId, Track track){
-        Playlist playlist = playlistDAO.addTrack(playlistId, track, token);
-        return Response.status(Response.Status.CREATED).entity(new TracksOverview(playlist)).build();
+        TracksOverview tracksOverview = playlistDAO.addTrack(playlistId, track, token);
+        return Response.status(Response.Status.CREATED).entity(tracksOverview).build();
     }
 
 }

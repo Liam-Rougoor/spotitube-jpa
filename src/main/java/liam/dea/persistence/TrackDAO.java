@@ -49,7 +49,7 @@ public class TrackDAO {
                                 "FROM track t " +
                                 "LEFT OUTER JOIN playlist_track pt " +
                                 "ON t.id = pt.track " +
-                                "WHERE pt.playlist <> ?");
+                                "WHERE pt.playlist <> ? OR pt.playlist IS NULL ");
         ) {
             if(!tokenDAO.tokenIsValid(token)){
                 throw new InvalidTokenException();
