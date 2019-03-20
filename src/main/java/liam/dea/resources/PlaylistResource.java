@@ -64,4 +64,12 @@ public class PlaylistResource {
         return Response.status(Response.Status.CREATED).entity(tracksOverview).build();
     }
 
+    @Path("{playlistID}/tracks/{trackID}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeTrack(@QueryParam("token") String token, @PathParam("playlistID") int playlistID, @PathParam("trackID") int trackID){
+        TracksOverview tracksOverview = playlistDAO.removeTrack(playlistID, trackID, token);
+        return Response.ok(tracksOverview).build();
+    }
+
 }

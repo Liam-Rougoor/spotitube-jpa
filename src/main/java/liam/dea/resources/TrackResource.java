@@ -17,7 +17,6 @@ import java.util.List;
 public class TrackResource {
 
     private TrackDAO trackDAO = new TrackDAO();
-    //private PlaylistDAO playlistDAO = new PlaylistDAO();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

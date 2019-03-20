@@ -159,7 +159,7 @@ public class PlaylistDAO {
         }
     }
 
-    public PlaylistsOverview getPlaylistsOverview(String token){
+    public PlaylistsOverview getPlaylistsOverview(String token) {
         return new PlaylistsOverview(getAllPlaylists(token));
     }
 
@@ -189,5 +189,25 @@ public class PlaylistDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public TracksOverview removeTrack(int playlistID, int trackID, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement removeStatement = connection.prepareStatement("DELETE FROM playlist_track where playlist = ? AND track = ?");
+        ) {
+            if(!tokenDAO.tokenIsValid(token)){
+                throw new InvalidTokenException();
+            }
+            removeStatement.setInt(1, playlistID);
+            removeStatement.setInt(2, trackID);
+            removeStatement.execute();
+
+            Playlist playlist = getPlaylistByID(playlistID, token);
+            return new TracksOverview(playlist);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

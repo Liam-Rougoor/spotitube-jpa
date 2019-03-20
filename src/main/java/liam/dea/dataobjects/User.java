@@ -2,6 +2,7 @@ package liam.dea.dataobjects;
 
 public class User {
 
+    //TODO add actual name too
     private String user, password;
 
     public User(){}
