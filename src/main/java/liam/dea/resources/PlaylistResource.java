@@ -36,18 +36,26 @@ public class PlaylistResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") int id){
-        Playlist playlist = playlistDAO.deletePlaylist(id, token);
-        return Response.ok(playlist).build();
+        playlistDAO.deletePlaylist(id, token);
+        return getAllPlaylists(token);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createPlaylist(@QueryParam("token") String token, Playlist playlist){
-        Playlist createdPlaylist = playlistDAO.addPlaylist(playlist, token);
-
-        return Response.status(Response.Status.CREATED).entity(createdPlaylist).build();
-        //return Response.ok("Added playlist").build();
+        playlistDAO.addPlaylist(playlist, token);
+        String user = tokenDAO.getUserWithToken(token);
+        PlaylistsOverview overview = new PlaylistsOverview(playlistDAO.getAllPlaylists(user, token));
+        return Response.status(Response.Status.CREATED).entity(overview).build();
     }
+
+//    @Path("{id}")
+//    @PUT
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") int id){
+//        playlistDAO.edi
+//    }
 
 }
