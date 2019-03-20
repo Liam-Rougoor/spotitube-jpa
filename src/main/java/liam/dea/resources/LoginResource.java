@@ -1,10 +1,8 @@
 package liam.dea.resources;
 
-import liam.dea.dataobjects.Login;
 import liam.dea.dataobjects.User;
 import liam.dea.persistence.TokenDAO;
 import liam.dea.persistence.UserDAO;
-import liam.dea.persistence.old.UserStore;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
