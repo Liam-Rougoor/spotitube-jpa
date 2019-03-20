@@ -127,10 +127,31 @@ public class PlaylistDAO {
             ResultSet playlistIDRow = lastInsertedIDStatement.executeQuery();
             playlistIDRow.next();
             Playlist addedPlaylist = new Playlist();
-            playlist.setName(playlist.getName());
-            playlist.setId(playlistIDRow.getInt("id"));
-            playlist.setUser(user);
-            return playlist;
+            addedPlaylist.setName(playlist.getName());
+            addedPlaylist.setId(playlistIDRow.getInt("id"));
+            addedPlaylist.setUser(user);
+            return addedPlaylist;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Playlist editPlaylist(Playlist playlist, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement updateStatement = connection.prepareStatement("UPDATE playlist SET name = ? WHERE id = ?");
+        ) {
+            if (!tokenDAO.tokenIsValid(token)) {
+                throw new InvalidTokenException();
+            }
+            updateStatement.setString(1, playlist.getName());
+            updateStatement.setInt(2, playlist.getId());
+            updateStatement.execute();
+            Playlist editedPlaylist = new Playlist();
+            editedPlaylist.setId(playlist.getId());
+            editedPlaylist.setName(playlist.getName());
+            editedPlaylist.setUser(playlist.getUser());
+            return editedPlaylist;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

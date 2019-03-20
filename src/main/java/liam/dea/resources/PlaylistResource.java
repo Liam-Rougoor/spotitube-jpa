@@ -50,12 +50,13 @@ public class PlaylistResource {
         return Response.status(Response.Status.CREATED).entity(overview).build();
     }
 
-//    @Path("{id}")
-//    @PUT
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") int id){
-//        playlistDAO.edi
-//    }
+    @Path("{id}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editPlaylist(@QueryParam("token") String token, Playlist playlist){
+        playlistDAO.editPlaylist(playlist, token);
+        return getAllPlaylists(token);
+    }
 
 }
