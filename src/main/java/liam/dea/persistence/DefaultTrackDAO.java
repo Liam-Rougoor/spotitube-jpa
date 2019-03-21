@@ -56,14 +56,11 @@ public class DefaultTrackDAO implements TrackDAO {
     }
 
     @Override
-    public List<Track> getPlaylistTracks(int playlistID, String token) {
+    public List<Track> getPlaylistTracks(int playlistID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT track FROM playlist_track WHERE playlist = ?");
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
             preparedStatement.setInt(1, playlistID);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Track> tracks = new ArrayList<>();
@@ -77,7 +74,7 @@ public class DefaultTrackDAO implements TrackDAO {
     }
 
     @Override
-    public List<Track> getAvailableTracks(int playlistID, String token) {
+    public List<Track> getAvailableTracks(int playlistID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
@@ -89,9 +86,6 @@ public class DefaultTrackDAO implements TrackDAO {
                                 "where playlist = ? " +
                                 ") ");
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
             preparedStatement.setInt(1, playlistID);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Track> tracks = new ArrayList<>();
@@ -105,15 +99,12 @@ public class DefaultTrackDAO implements TrackDAO {
     }
 
     @Override
-    public TracksOverview addTrack(int playlistId, Track track, String token) {
+    public TracksOverview addTrack(int playlistId, Track track) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?)");
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
-            Playlist playlist = playlistDAO.getPlaylistByID(playlistId, token);
+            Playlist playlist = playlistDAO.getPlaylistByID(playlistId);
             Track foundTrack = getTrackByID(track.getId());
             insertStatement.setInt(1, playlistId);
             insertStatement.setInt(2, foundTrack.getId());
@@ -127,18 +118,15 @@ public class DefaultTrackDAO implements TrackDAO {
     }
 
     @Override
-    public TracksOverview removeTrack(int playlistID, int trackID, String token) {
+    public TracksOverview removeTrack(int playlistID, int trackID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement removeStatement = connection.prepareStatement("DELETE FROM playlist_track where playlist = ? AND track = ?");
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
             removeStatement.setInt(1, playlistID);
             removeStatement.setInt(2, trackID);
             removeStatement.execute();
-            List<Track> tracks = getPlaylistTracks(playlistID, token);
+            List<Track> tracks = getPlaylistTracks(playlistID);
             return createTracksOverview(tracks);
         } catch (SQLException e) {
             throw new RuntimeException(e);

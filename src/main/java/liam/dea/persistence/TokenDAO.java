@@ -17,7 +17,8 @@ public class TokenDAO {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getString("user");
+                String username = resultSet.getString("user");
+                return username;
             }
             throw new InvalidTokenException();
         } catch (SQLException e) {

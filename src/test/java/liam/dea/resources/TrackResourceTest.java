@@ -44,7 +44,7 @@ public class TrackResourceTest {
     void returnsTracksAndStatusOKWhenSuccess() {
         int playlistID = 1;
         String token = "123";
-        Mockito.when(trackDAOStub.getAvailableTracks(playlistID, token)).thenReturn(tracksStub);
+        Mockito.when(trackDAOStub.getAvailableTracks(playlistID)).thenReturn(tracksStub);
         Mockito.when(trackDAOStub.createTracksOverview(tracksStub)).thenReturn(tracksOverviewStub);
 
         Response response = systemUnderTest.getAvailableTracksForPlaylist(playlistID, token);

@@ -5,11 +5,11 @@ import liam.dea.dataobjects.TracksOverview;
 
 public interface PlaylistTracksService {
 
-    TracksOverview getPlaylistTracksOverview(int playlistID, String token);
+    TracksOverview getPlaylistTracksOverview(int playlistID);
 
-    TracksOverview getAvailableTracksOverview(int playlistID, String token);
+    TracksOverview getAvailableTracksOverview(int playlistID);
 
-    TracksOverview addTrack(int playlistId, Track track, String token);
+    TracksOverview addTrack(int playlistId, Track track);
 
-    TracksOverview removeTrack(int playlistID, int trackID, String token);
+    TracksOverview removeTrack(int playlistID, int trackID);
 }

@@ -1,6 +1,7 @@
 package liam.dea.resources;
 
 import liam.dea.dataobjects.*;
+import liam.dea.resources.util.TokenValidator;
 import liam.dea.services.PlaylistService;
 import liam.dea.services.PlaylistTracksService;
 
@@ -14,27 +15,31 @@ public class PlaylistResource {
 
     private PlaylistService playlistService;
     private PlaylistTracksService playlistTracksService;
+    private TokenValidator tokenValidator;
 
     public PlaylistResource() {
     }
 
     @Inject
-    public PlaylistResource(PlaylistService playlistService, PlaylistTracksService playlistTracksService) {
+    public PlaylistResource(PlaylistService playlistService, PlaylistTracksService playlistTracksService, TokenValidator tokenValidator) {
         this.playlistService = playlistService;
         this.playlistTracksService = playlistTracksService;
+        this.tokenValidator = tokenValidator;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
-        return Response.ok(playlistService.getPlaylistsOverview(token)).build();
+        tokenValidator.validateToken(token);
+        return Response.ok(playlistService.getPlaylistsOverview(tokenValidator.getUserWithToken(token))).build();
     }
 
     @Path("{id}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") int id) {
-        playlistService.deletePlaylist(id, token);
+        tokenValidator.validateToken(token);
+        playlistService.deletePlaylist(id);
         return getAllPlaylists(token);
     }
 
@@ -42,8 +47,9 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createPlaylist(@QueryParam("token") String token, Playlist playlist) {
-        playlistService.createPlaylist(playlist, token);
-        return Response.status(Response.Status.CREATED).entity(playlistService.getPlaylistsOverview(token)).build();
+        tokenValidator.validateToken(token);
+        playlistService.createPlaylist(playlist, tokenValidator.getUserWithToken(token));
+        return Response.status(Response.Status.CREATED).entity(playlistService.getPlaylistsOverview(tokenValidator.getUserWithToken(token))).build();
     }
 
     @Path("{id}")
@@ -51,7 +57,8 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editPlaylist(@QueryParam("token") String token, Playlist playlist) {
-        playlistService.editPlaylist(playlist, token);
+        tokenValidator.validateToken(token);
+        playlistService.editPlaylist(playlist);
         return getAllPlaylists(token);
     }
 
@@ -59,7 +66,8 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") int id) {
-        TracksOverview tracksOverview = playlistTracksService.getPlaylistTracksOverview(id, token);
+        tokenValidator.validateToken(token);
+        TracksOverview tracksOverview = playlistTracksService.getPlaylistTracksOverview(id);
         return Response.ok(tracksOverview).build();
     }
 
@@ -68,7 +76,8 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrack(@QueryParam("token") String token, @PathParam("id") int playlistId, Track track) {
-        TracksOverview tracksOverview = playlistTracksService.addTrack(playlistId, track, token);
+        tokenValidator.validateToken(token);
+        TracksOverview tracksOverview = playlistTracksService.addTrack(playlistId, track);
         return Response.status(Response.Status.CREATED).entity(tracksOverview).build();
     }
 
@@ -76,7 +85,8 @@ public class PlaylistResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeTrack(@QueryParam("token") String token, @PathParam("playlistID") int playlistID, @PathParam("trackID") int trackID) {
-        TracksOverview tracksOverview = playlistTracksService.removeTrack(playlistID, trackID, token);
+        tokenValidator.validateToken(token);
+        TracksOverview tracksOverview = playlistTracksService.removeTrack(playlistID, trackID);
         return Response.ok(tracksOverview).build();
     }
 }
