@@ -6,15 +6,15 @@ import liam.dea.dataobjects.PlaylistsOverview;
 import java.util.List;
 
 public interface PlaylistDAO {
-    List<Playlist> getAllPlaylists(String token);
+    List<Playlist> getAllPlaylists(String currentUser);
 
-    Playlist getPlaylistByID(int id, String token);
+    Playlist getPlaylistByID(int id);
 
-    Playlist deletePlaylist(int id, String token);
+    Playlist deletePlaylist(int id);
 
-    Playlist addPlaylist(Playlist playlist, String token);
+    Playlist addPlaylist(Playlist playlist, String user);
 
-    Playlist editPlaylist(Playlist playlist, String token);
+    Playlist editPlaylist(Playlist playlist);
 
-    PlaylistsOverview getPlaylistsOverview(String token);
+    PlaylistsOverview getPlaylistsOverview(String currentUser);
 }

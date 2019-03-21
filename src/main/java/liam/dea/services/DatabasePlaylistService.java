@@ -21,22 +21,23 @@ public class DatabasePlaylistService implements PlaylistService {
     }
 
     @Override
-    public PlaylistsOverview getPlaylistsOverview(String token) {
-        return playlistDAO.getPlaylistsOverview(token);
+    public PlaylistsOverview getPlaylistsOverview(String username) {
+        return playlistDAO.getPlaylistsOverview(username);
     }
 
     @Override
-    public void deletePlaylist(int id, String token) {
-        playlistDAO.deletePlaylist(id, token);
+    public void deletePlaylist(int id) {
+        playlistDAO.deletePlaylist(id);
+    }
+
+    //TODO replace token with username
+    @Override
+    public void createPlaylist(Playlist playlist, String username) {
+        playlistDAO.addPlaylist(playlist, username);
     }
 
     @Override
-    public void createPlaylist(Playlist playlist, String token) {
-        playlistDAO.addPlaylist(playlist, token);
-    }
-
-    @Override
-    public void editPlaylist(Playlist playlist, String token) {
-        playlistDAO.editPlaylist(playlist, token);
+    public void editPlaylist(Playlist playlist) {
+        playlistDAO.editPlaylist(playlist);
     }
 }

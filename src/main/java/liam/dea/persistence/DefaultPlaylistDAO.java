@@ -16,10 +16,8 @@ import java.util.List;
 @Default
 public class DefaultPlaylistDAO implements PlaylistDAO {
 
-    private TokenDAO tokenDAO = new TokenDAO();
-
     @Override
-    public List<Playlist> getAllPlaylists(String token) {
+    public List<Playlist> getAllPlaylists(String currentUser) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist");
@@ -27,8 +25,8 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
             while (resultSet.next()) {
-                Playlist playlist = getPlaylistByID(resultSet.getInt("id"), token);
-                playlist.setOwner(tokenDAO.getUserWithToken(token).equals(playlist.getUser()));
+                Playlist playlist = getPlaylistByID(resultSet.getInt("id"));
+                playlist.setOwner(currentUser.equals(playlist.getUser()));
                 playlists.add(playlist);
             }
             return playlists;
@@ -38,16 +36,12 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     }
 
     @Override
-    public Playlist getPlaylistByID(int id, String token) {
+    public Playlist getPlaylistByID(int id) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement playlistStatement = connection.prepareStatement("SELECT * FROM playlist WHERE id = ?");
                 PreparedStatement playlistTrackStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
-
             playlistStatement.setInt(1, id);
             ResultSet playlistSet = playlistStatement.executeQuery();
 
@@ -56,7 +50,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
                 playlist.setId(id);
                 playlist.setName(playlistSet.getString("name"));
                 playlist.setUser(playlistSet.getString("owner"));
-                playlist.setTracks(new DefaultTrackDAO().getPlaylistTracks(id,token));
+                playlist.setTracks(new DefaultTrackDAO().getPlaylistTracks(id));
                 return playlist;
             }
             throw new DatabaseItemNotFoundException("Playlist " + id + " not found");
@@ -67,12 +61,12 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 
 
     @Override
-    public Playlist deletePlaylist(int id, String token) {
+    public Playlist deletePlaylist(int id) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement deletePlaylistStatement = connection.prepareStatement("DELETE FROM playlist WHERE id = ?");
         ) {
-            Playlist playlist = getPlaylistByID(id, token);
+            Playlist playlist = getPlaylistByID(id);
             deletePlaylistStatement.setInt(1, id);
             deletePlaylistStatement.execute();
             return playlist;
@@ -82,25 +76,21 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     }
 
     @Override
-    public Playlist addPlaylist(Playlist playlist, String token) {
+    public Playlist addPlaylist(Playlist playlist, String currentUser) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist(name, owner) VALUES(?, ?)");
                 PreparedStatement lastInsertedIDStatement = connection.prepareStatement("SELECT LAST_INSERT_ID() AS id")
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
-            String user = tokenDAO.getUserWithToken(token);
             insertStatement.setString(1, playlist.getName());
-            insertStatement.setString(2, user);
+            insertStatement.setString(2, currentUser);
             insertStatement.execute();
             ResultSet playlistIDRow = lastInsertedIDStatement.executeQuery();
             playlistIDRow.next();
             Playlist addedPlaylist = new Playlist();
             addedPlaylist.setName(playlist.getName());
             addedPlaylist.setId(playlistIDRow.getInt("id"));
-            addedPlaylist.setUser(user);
+            addedPlaylist.setUser(currentUser);
             return addedPlaylist;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -108,14 +98,11 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     }
 
     @Override
-    public Playlist editPlaylist(Playlist playlist, String token) {
+    public Playlist editPlaylist(Playlist playlist) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement updateStatement = connection.prepareStatement("UPDATE playlist SET name = ? WHERE id = ?");
         ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
             updateStatement.setString(1, playlist.getName());
             updateStatement.setInt(2, playlist.getId());
             updateStatement.execute();
@@ -130,8 +117,8 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     }
 
     @Override
-    public PlaylistsOverview getPlaylistsOverview(String token) {
-        return new PlaylistsOverview(getAllPlaylists(token));
+    public PlaylistsOverview getPlaylistsOverview(String currentUser) {
+        return new PlaylistsOverview(getAllPlaylists(currentUser));
     }
 
 }

@@ -22,22 +22,22 @@ public class DatabasePlaylistTracksService implements PlaylistTracksService {
     }
 
     @Override
-    public TracksOverview getPlaylistTracksOverview(int playlistID, String token) {
-        return new TracksOverview(trackDAO.getPlaylistTracks(playlistID, token));
+    public TracksOverview getPlaylistTracksOverview(int playlistID) {
+        return new TracksOverview(trackDAO.getPlaylistTracks(playlistID));
     }
 
     @Override
-    public TracksOverview getAvailableTracksOverview(int playlistID, String token) {
-        return new TracksOverview(trackDAO.getAvailableTracks(playlistID, token));
+    public TracksOverview getAvailableTracksOverview(int playlistID) {
+        return new TracksOverview(trackDAO.getAvailableTracks(playlistID));
     }
 
     @Override
-    public TracksOverview addTrack(int playlistId, Track track, String token) {
-        return trackDAO.addTrack(playlistId, track, token);
+    public TracksOverview addTrack(int playlistId, Track track) {
+        return trackDAO.addTrack(playlistId, track);
     }
 
     @Override
-    public TracksOverview removeTrack(int playlistID, int trackID, String token) {
-        return trackDAO.removeTrack(playlistID, trackID, token);
+    public TracksOverview removeTrack(int playlistID, int trackID) {
+        return trackDAO.removeTrack(playlistID, trackID);
     }
 }
