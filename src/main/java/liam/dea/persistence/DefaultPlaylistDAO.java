@@ -56,7 +56,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
                 playlist.setId(id);
                 playlist.setName(playlistSet.getString("name"));
                 playlist.setUser(playlistSet.getString("owner"));
-                playlist.setTracks(new TrackDAO().getPlaylistTracks(id,token));
+                playlist.setTracks(new DefaultTrackDAO().getPlaylistTracks(id,token));
                 return playlist;
             }
             throw new DatabaseItemNotFoundException("Playlist " + id + " not found");

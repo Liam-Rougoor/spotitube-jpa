@@ -2,7 +2,6 @@ package liam.dea.services;
 
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.PlaylistsOverview;
-import liam.dea.persistence.DefaultPlaylistDAO;
 import liam.dea.persistence.PlaylistDAO;
 
 import javax.enterprise.inject.Default;
