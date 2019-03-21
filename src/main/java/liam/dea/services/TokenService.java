@@ -1,6 +1,6 @@
-package liam.dea.resources.util;
+package liam.dea.services;
 
-public interface TokenValidator {
+public interface TokenService {
 
     void validateToken(String token);
 

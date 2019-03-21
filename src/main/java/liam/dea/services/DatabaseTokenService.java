@@ -1,4 +1,4 @@
-package liam.dea.resources.util;
+package liam.dea.services;
 
 import liam.dea.exceptions.InvalidTokenException;
 import liam.dea.persistence.TokenDAO;
@@ -7,15 +7,15 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 @Default
-public class DatabaseTokenValidator implements TokenValidator {
+public class DatabaseTokenService implements TokenService {
 
-    TokenDAO tokenDAO;
+    private TokenDAO tokenDAO;
 
-    public DatabaseTokenValidator() {
+    public DatabaseTokenService() {
     }
 
     @Inject
-    public DatabaseTokenValidator(TokenDAO tokenDAO) {
+    public DatabaseTokenService(TokenDAO tokenDAO) {
         this.tokenDAO = tokenDAO;
     }
 
