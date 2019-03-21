@@ -59,13 +59,15 @@ public class DefaultTrackDAO implements TrackDAO {
     public List<Track> getPlaylistTracks(int playlistID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT track FROM playlist_track WHERE playlist = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
         ) {
             preparedStatement.setInt(1, playlistID);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Track> tracks = new ArrayList<>();
             while (resultSet.next()) {
-                tracks.add(getTrackByID(resultSet.getInt("track")));
+                Track foundTrack = getTrackByID(resultSet.getInt("track"));
+                foundTrack.setOfflineAvailable(resultSet.getBoolean("offline_available"));
+                tracks.add(foundTrack);
             }
             return tracks;
         } catch (SQLException e) {
@@ -102,12 +104,13 @@ public class DefaultTrackDAO implements TrackDAO {
     public TracksOverview addTrack(int playlistId, Track track) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?)");
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?, ?)");
         ) {
             Playlist playlist = playlistDAO.getPlaylistByID(playlistId);
             Track foundTrack = getTrackByID(track.getId());
             insertStatement.setInt(1, playlistId);
             insertStatement.setInt(2, foundTrack.getId());
+            insertStatement.setBoolean(3, track.getOfflineAvailable());
             insertStatement.execute();
             foundTrack.setOfflineAvailable(track.getOfflineAvailable());
             playlist.addTrack(foundTrack);
