@@ -97,7 +97,7 @@ public class TrackDAO {
             if (!tokenDAO.tokenIsValid(token)) {
                 throw new InvalidTokenException();
             }
-            Playlist playlist = new PlaylistDAO().getPlaylistByID(playlistId, token);
+            Playlist playlist = new DefaultPlaylistDAO().getPlaylistByID(playlistId, token);
             Track foundTrack = new TrackDAO().getTrackByID(track.getId());
             insertStatement.setInt(1, playlistId);
             insertStatement.setInt(2, foundTrack.getId());

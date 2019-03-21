@@ -2,8 +2,6 @@ package liam.dea.resources;
 
 import liam.dea.dataobjects.Login;
 import liam.dea.dataobjects.User;
-import liam.dea.persistence.TokenDAO;
-import liam.dea.persistence.UserDAO;
 import liam.dea.services.LoginService;
 
 import javax.inject.Inject;

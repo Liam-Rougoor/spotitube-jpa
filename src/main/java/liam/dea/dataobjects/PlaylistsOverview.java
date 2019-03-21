@@ -1,6 +1,5 @@
 package liam.dea.dataobjects;
 
-import liam.dea.dataobjects.Playlist;
 
 import java.util.List;
 

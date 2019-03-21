@@ -1,9 +1,5 @@
 package liam.dea.dataobjects;
 
-import liam.dea.persistence.PlaylistDAO;
-import liam.dea.resources.LoginResource;
-import liam.dea.persistence.old.TrackStore;
-import liam.dea.persistence.old.UserStore;
 
 import java.util.ArrayList;
 import java.util.List;
