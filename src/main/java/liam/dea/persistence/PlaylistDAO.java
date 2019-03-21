@@ -16,24 +16,6 @@ import java.util.List;
 
 public class PlaylistDAO {
 
-    //    public List<Playlist> getPlaylistsOfUser(String username) {
-//        try (
-//                Connection connection = new DatabaseConnectionFactory().createConnection();
-//                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_playlist WHERE user_playlist.user = ?");
-//        ) {
-//            preparedStatement.setString(1, username);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            List<Playlist> playlists = new ArrayList<>();
-//            while(resultSet.next()){
-//                Playlist playlist = getPlaylistByID(resultSet.getInt("playlist"));
-//                playlist.setOwner(username.equals(playlist.getUser()));
-//                playlists.add(playlist);
-//            }
-//            return  playlists;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
     private TokenDAO tokenDAO = new TokenDAO();
 
     public List<Playlist> getAllPlaylists(String token) {
@@ -72,7 +54,7 @@ public class PlaylistDAO {
                 playlist.setId(id);
                 playlist.setName(playlistSet.getString("name"));
                 playlist.setUser(playlistSet.getString("owner"));
-                playlist.setTracks(getTracksOfPlaylist(id));
+                playlist.setTracks(new TrackDAO().getPlaylistTracks(id,token));
                 return playlist;
             }
             throw new DatabaseItemNotFoundException("Playlist " + id + " not found");
@@ -81,23 +63,6 @@ public class PlaylistDAO {
         }
     }
 
-    private List<Track> getTracksOfPlaylist(int id) {
-        try (
-                Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement playlistTrackStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
-        ) {
-            playlistTrackStatement.setInt(1, id);
-            ResultSet playlistTracks = playlistTrackStatement.executeQuery();
-            List<Track> tracks = new ArrayList<>();
-            TrackDAO trackDAO = new TrackDAO();
-            while (playlistTracks.next()) {
-                tracks.add(trackDAO.getTrackByID(playlistTracks.getInt("track")));
-            }
-            return tracks;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public Playlist deletePlaylist(int id, String token) {
         try (
@@ -163,33 +128,6 @@ public class PlaylistDAO {
         return new PlaylistsOverview(getAllPlaylists(token));
     }
 
-//    public PlaylistOverview getPlaylistOverview(Playlist playlist){
-//        return new PlaylistOverview(playlist);
-//    }
-
-    public TracksOverview addTrack(int playlistId, Track track, String token) {
-        try (
-                Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?)");
-        ) {
-            if (!tokenDAO.tokenIsValid(token)) {
-                throw new InvalidTokenException();
-            }
-
-            Playlist playlist = getPlaylistByID(playlistId, token);
-            Track foundTrack = new TrackDAO().getTrackByID(track.getId());
-
-            insertStatement.setInt(1, playlistId);
-            insertStatement.setInt(2, foundTrack.getId());
-            insertStatement.execute();
-
-            foundTrack.setOfflineAvailable(track.getOfflineAvailable());
-            playlist.addTrack(foundTrack);
-            return new TracksOverview(playlist);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public TracksOverview removeTrack(int playlistID, int trackID, String token) {
         try (

@@ -2,6 +2,7 @@ package liam.dea.persistence;
 
 import liam.dea.Exceptions.DatabaseItemNotFoundException;
 import liam.dea.Exceptions.InvalidTokenException;
+import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.Track;
 import liam.dea.dataobjects.TracksOverview;
 
@@ -41,6 +42,26 @@ public class TrackDAO {
         }
     }
 
+    public List<Track> getPlaylistTracks(int playlistID, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT track FROM playlist_track WHERE playlist = ?");
+        ) {
+            if (!tokenDAO.tokenIsValid(token)) {
+                throw new InvalidTokenException();
+            }
+            preparedStatement.setInt(1, playlistID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Track> tracks = new ArrayList<>();
+            while (resultSet.next()) {
+                tracks.add(getTrackByID(resultSet.getInt("track")));
+            }
+            return tracks;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Track> getAvailableTracks(int playlistID, String token) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
@@ -48,7 +69,7 @@ public class TrackDAO {
                         "SELECT id " +
                                 "FROM track " +
                                 "WHERE id NOT IN (" +
-                                "SELECT id " +
+                                "SELECT track " +
                                 "FROM playlist_track " +
                                 "where playlist = ? " +
                                 ") ");
@@ -63,6 +84,45 @@ public class TrackDAO {
                 tracks.add(getTrackByID(resultSet.getInt("id")));
             }
             return tracks;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public TracksOverview addTrack(int playlistId, Track track, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?)");
+        ) {
+            if (!tokenDAO.tokenIsValid(token)) {
+                throw new InvalidTokenException();
+            }
+            Playlist playlist = new PlaylistDAO().getPlaylistByID(playlistId, token);
+            Track foundTrack = new TrackDAO().getTrackByID(track.getId());
+            insertStatement.setInt(1, playlistId);
+            insertStatement.setInt(2, foundTrack.getId());
+            insertStatement.execute();
+            foundTrack.setOfflineAvailable(track.getOfflineAvailable());
+            playlist.addTrack(foundTrack);
+            return createTracksOverview(playlist.getTracks());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public TracksOverview removeTrack(int playlistID, int trackID, String token) {
+        try (
+                Connection connection = new DatabaseConnectionFactory().createConnection();
+                PreparedStatement removeStatement = connection.prepareStatement("DELETE FROM playlist_track where playlist = ? AND track = ?");
+        ) {
+            if (!tokenDAO.tokenIsValid(token)) {
+                throw new InvalidTokenException();
+            }
+            removeStatement.setInt(1, playlistID);
+            removeStatement.setInt(2, trackID);
+            removeStatement.execute();
+            List<Track> tracks = getPlaylistTracks(playlistID, token);
+            return createTracksOverview(tracks);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

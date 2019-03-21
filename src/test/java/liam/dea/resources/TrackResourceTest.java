@@ -47,7 +47,7 @@ public class TrackResourceTest {
         Mockito.when(trackDAOStub.getAvailableTracks(playlistID, token)).thenReturn(tracksStub);
         Mockito.when(trackDAOStub.createTracksOverview(tracksStub)).thenReturn(tracksOverviewStub);
 
-        Response response = systemUnderTest.getTracksByPlaylist(playlistID, token);
+        Response response = systemUnderTest.getAvailableTracksForPlaylist(playlistID, token);
         assertEquals(Response.Status.OK, response.getStatusInfo());
         TracksOverview actualTracksOverview = (TracksOverview) response.getEntity();
         Track actualTrack = actualTracksOverview.getTracks().get(0);
