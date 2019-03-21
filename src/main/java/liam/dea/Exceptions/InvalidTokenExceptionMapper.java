@@ -1,4 +1,4 @@
-package liam.dea.Exceptions;
+package liam.dea.exceptions;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

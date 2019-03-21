@@ -1,8 +1,7 @@
 package liam.dea.persistence;
 
-import com.mysql.cj.protocol.Resultset;
-import liam.dea.Exceptions.DatabaseItemNotFoundException;
-import liam.dea.Exceptions.InvalidCredentialsException;
+import liam.dea.exceptions.DatabaseItemNotFoundException;
+import liam.dea.exceptions.InvalidCredentialsException;
 import liam.dea.dataobjects.User;
 
 import java.sql.Connection;

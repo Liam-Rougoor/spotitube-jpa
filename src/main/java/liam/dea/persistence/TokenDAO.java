@@ -1,8 +1,7 @@
 package liam.dea.persistence;
 
-import liam.dea.Exceptions.InvalidTokenException;
+import liam.dea.exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Login;
-import liam.dea.dataobjects.User;
 
 import java.sql.*;
 import java.time.LocalDate;

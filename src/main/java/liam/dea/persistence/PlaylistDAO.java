@@ -1,11 +1,9 @@
 package liam.dea.persistence;
 
-import liam.dea.Exceptions.InvalidTokenException;
-import liam.dea.Exceptions.DatabaseItemNotFoundException;
+import liam.dea.exceptions.InvalidTokenException;
+import liam.dea.exceptions.DatabaseItemNotFoundException;
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.PlaylistsOverview;
-import liam.dea.dataobjects.Track;
-import liam.dea.dataobjects.TracksOverview;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -128,24 +126,4 @@ public class PlaylistDAO {
         return new PlaylistsOverview(getAllPlaylists(token));
     }
 
-
-    public TracksOverview removeTrack(int playlistID, int trackID, String token) {
-        try (
-                Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement removeStatement = connection.prepareStatement("DELETE FROM playlist_track where playlist = ? AND track = ?");
-        ) {
-            if(!tokenDAO.tokenIsValid(token)){
-                throw new InvalidTokenException();
-            }
-            removeStatement.setInt(1, playlistID);
-            removeStatement.setInt(2, trackID);
-            removeStatement.execute();
-
-            Playlist playlist = getPlaylistByID(playlistID, token);
-            return new TracksOverview(playlist);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 }

@@ -1,7 +1,7 @@
 package liam.dea.persistence;
 
-import liam.dea.Exceptions.DatabaseItemNotFoundException;
-import liam.dea.Exceptions.InvalidTokenException;
+import liam.dea.exceptions.DatabaseItemNotFoundException;
+import liam.dea.exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.Track;
 import liam.dea.dataobjects.TracksOverview;
