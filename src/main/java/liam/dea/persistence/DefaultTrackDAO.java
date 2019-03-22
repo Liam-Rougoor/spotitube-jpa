@@ -1,7 +1,6 @@
 package liam.dea.persistence;
 
 import liam.dea.exceptions.DatabaseItemNotFoundException;
-import liam.dea.exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.Track;
 import liam.dea.dataobjects.TracksOverview;
@@ -18,7 +17,7 @@ import java.util.List;
 @Default
 public class DefaultTrackDAO implements TrackDAO {
 
-    private TokenDAO tokenDAO = new TokenDAO();
+    private TokenDAO tokenDAO = new DefaultTokenDAO();
     private PlaylistDAO playlistDAO;
 
     public DefaultTrackDAO() {
