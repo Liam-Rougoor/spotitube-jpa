@@ -78,6 +78,6 @@ public class DefaultTokenDAO implements TokenDAO {
 
     @Override
     public Login getLogin(String user){
-        return new Login(new UserDAO().getUserByName(user).getName(), getTokenOfUser(user));
+        return new Login(new DefaultUserDAO().getUserByName(user).getName(), getTokenOfUser(user));
     }
 }

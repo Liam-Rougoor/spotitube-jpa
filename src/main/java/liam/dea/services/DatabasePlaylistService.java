@@ -30,7 +30,6 @@ public class DatabasePlaylistService implements PlaylistService {
         playlistDAO.deletePlaylist(id);
     }
 
-    //TODO replace token with username
     @Override
     public void createPlaylist(Playlist playlist, String username) {
         playlistDAO.addPlaylist(playlist, username);

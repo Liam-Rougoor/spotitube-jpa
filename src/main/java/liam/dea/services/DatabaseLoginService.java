@@ -2,7 +2,6 @@ package liam.dea.services;
 
 import liam.dea.dataobjects.Login;
 import liam.dea.dataobjects.User;
-import liam.dea.persistence.DefaultTokenDAO;
 import liam.dea.persistence.TokenDAO;
 import liam.dea.persistence.UserDAO;
 
@@ -12,11 +11,14 @@ import javax.inject.Inject;
 @Default
 public class DatabaseLoginService implements LoginService {
 
-    private UserDAO userDAO = new UserDAO();
+    private UserDAO userDAO;
     private TokenDAO tokenDAO;
 
+    public DatabaseLoginService(){}
+
     @Inject
-    public DatabaseLoginService(TokenDAO tokenDAO) {
+    public DatabaseLoginService(UserDAO userDAO, TokenDAO tokenDAO) {
+        this.userDAO = userDAO;
         this.tokenDAO = tokenDAO;
     }
 
