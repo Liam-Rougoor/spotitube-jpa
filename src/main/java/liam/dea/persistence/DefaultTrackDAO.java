@@ -17,7 +17,6 @@ import java.util.List;
 @Default
 public class DefaultTrackDAO implements TrackDAO {
 
-    private TokenDAO tokenDAO = new DefaultTokenDAO();
     private PlaylistDAO playlistDAO;
 
     public DefaultTrackDAO() {

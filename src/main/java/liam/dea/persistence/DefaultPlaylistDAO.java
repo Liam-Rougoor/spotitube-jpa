@@ -6,6 +6,7 @@ import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.PlaylistsOverview;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,16 @@ import java.util.List;
 
 @Default
 public class DefaultPlaylistDAO implements PlaylistDAO {
+
+    private TrackDAO trackDAO = new DefaultTrackDAO();
+
+//    public DefaultPlaylistDAO() {
+//    }
+//
+//    @Inject
+//    public DefaultPlaylistDAO(TrackDAO trackDAO) {
+//        this.trackDAO = trackDAO;
+//    }
 
     @Override
     public List<Playlist> getAllPlaylists(String currentUser) {
@@ -50,7 +61,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
                 playlist.setId(id);
                 playlist.setName(playlistSet.getString("name"));
                 playlist.setUser(playlistSet.getString("owner"));
-                playlist.setTracks(new DefaultTrackDAO().getPlaylistTracks(id));
+                playlist.setTracks(trackDAO.getPlaylistTracks(id));
                 return playlist;
             }
             throw new DatabaseItemNotFoundException("Playlist " + id + " not found");

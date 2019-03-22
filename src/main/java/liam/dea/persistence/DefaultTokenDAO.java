@@ -4,12 +4,23 @@ import liam.dea.exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Login;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Default
 public class DefaultTokenDAO implements TokenDAO {
+
+    private UserDAO userDAO;
+
+    public DefaultTokenDAO() {
+    }
+
+    @Inject
+    public DefaultTokenDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Override
     public String getUserWithToken(String token) {
@@ -78,6 +89,6 @@ public class DefaultTokenDAO implements TokenDAO {
 
     @Override
     public Login getLogin(String user){
-        return new Login(new DefaultUserDAO().getUserByName(user).getName(), getTokenOfUser(user));
+        return new Login(userDAO.getUserByName(user).getName(), getTokenOfUser(user));
     }
 }
