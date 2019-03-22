@@ -19,6 +19,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
 
     private TrackDAO trackDAO = new DefaultTrackDAO();
 
+    //TODO Uitzoeken waarom de trackDAO hier niet goed inject wordt
 //    public DefaultPlaylistDAO() {
 //    }
 //
