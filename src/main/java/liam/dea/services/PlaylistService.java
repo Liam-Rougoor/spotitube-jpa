@@ -9,7 +9,6 @@ public interface PlaylistService {
 
     void deletePlaylist(int id);
 
-    //TODO find a way to remove token parameter, but use username instead
     void createPlaylist(Playlist playlist, String username);
 
     void editPlaylist(Playlist playlist);

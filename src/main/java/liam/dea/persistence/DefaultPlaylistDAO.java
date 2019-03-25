@@ -17,16 +17,15 @@ import java.util.List;
 @Default
 public class DefaultPlaylistDAO implements PlaylistDAO {
 
-    private TrackDAO trackDAO = new DefaultTrackDAO();
+    private TrackDAO trackDAO;
 
-    //TODO Uitzoeken waarom de trackDAO hier niet goed inject wordt
-//    public DefaultPlaylistDAO() {
-//    }
-//
-//    @Inject
-//    public DefaultPlaylistDAO(TrackDAO trackDAO) {
-//        this.trackDAO = trackDAO;
-//    }
+    public DefaultPlaylistDAO() {
+    }
+
+    @Inject
+    public DefaultPlaylistDAO(TrackDAO trackDAO) {
+        this.trackDAO = trackDAO;
+    }
 
     @Override
     public List<Playlist> getAllPlaylists(String currentUser) {

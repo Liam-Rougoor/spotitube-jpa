@@ -17,16 +17,6 @@ import java.util.List;
 @Default
 public class DefaultTrackDAO implements TrackDAO {
 
-    private PlaylistDAO playlistDAO;
-
-    public DefaultTrackDAO() {
-    }
-
-    @Inject
-    public DefaultTrackDAO(PlaylistDAO playlistDAO) {
-        this.playlistDAO = playlistDAO;
-    }
-
     @Override
     public Track getTrackByID(int id) {
         try (
@@ -104,15 +94,13 @@ public class DefaultTrackDAO implements TrackDAO {
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?, ?)");
         ) {
-            Playlist playlist = playlistDAO.getPlaylistByID(playlistId);
             Track foundTrack = getTrackByID(track.getId());
             insertStatement.setInt(1, playlistId);
             insertStatement.setInt(2, foundTrack.getId());
             insertStatement.setBoolean(3, track.getOfflineAvailable());
             insertStatement.execute();
             foundTrack.setOfflineAvailable(track.getOfflineAvailable());
-            playlist.addTrack(foundTrack);
-            return createTracksOverview(playlist.getTracks());
+            return createTracksOverview(getPlaylistTracks(playlistId));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
