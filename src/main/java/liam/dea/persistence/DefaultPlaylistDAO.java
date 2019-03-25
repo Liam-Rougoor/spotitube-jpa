@@ -61,7 +61,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
                 playlist.setId(id);
                 playlist.setName(playlistSet.getString("name"));
                 playlist.setUser(playlistSet.getString("owner"));
-                playlist.setTracks(trackDAO.getPlaylistTracks(id));
+                playlist.setTracks(trackDAO.getPlaylistTracks(id).getTracks());
                 return playlist;
             }
             throw new DatabaseItemNotFoundException("Playlist " + id + " not found");
@@ -87,7 +87,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     }
 
     @Override
-    public Playlist addPlaylist(Playlist playlist, String currentUser) {
+    public Playlist createPlaylist(Playlist playlist, String currentUser) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist(name, owner) VALUES(?, ?)");

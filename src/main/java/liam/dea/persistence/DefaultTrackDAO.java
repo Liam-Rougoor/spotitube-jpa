@@ -44,7 +44,7 @@ public class DefaultTrackDAO implements TrackDAO {
     }
 
     @Override
-    public List<Track> getPlaylistTracks(int playlistID) {
+    public TracksOverview getPlaylistTracks(int playlistID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
@@ -57,14 +57,14 @@ public class DefaultTrackDAO implements TrackDAO {
                 foundTrack.setOfflineAvailable(resultSet.getBoolean("offline_available"));
                 tracks.add(foundTrack);
             }
-            return tracks;
+            return createTracksOverview(tracks);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<Track> getAvailableTracks(int playlistID) {
+    public TracksOverview getAvailableTracks(int playlistID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
@@ -82,7 +82,7 @@ public class DefaultTrackDAO implements TrackDAO {
             while (resultSet.next()) {
                 tracks.add(getTrackByID(resultSet.getInt("id")));
             }
-            return tracks;
+            return createTracksOverview(tracks);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -100,7 +100,7 @@ public class DefaultTrackDAO implements TrackDAO {
             insertStatement.setBoolean(3, track.getOfflineAvailable());
             insertStatement.execute();
             foundTrack.setOfflineAvailable(track.getOfflineAvailable());
-            return createTracksOverview(getPlaylistTracks(playlistId));
+            return getPlaylistTracks(playlistId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -115,8 +115,7 @@ public class DefaultTrackDAO implements TrackDAO {
             removeStatement.setInt(1, playlistID);
             removeStatement.setInt(2, trackID);
             removeStatement.execute();
-            List<Track> tracks = getPlaylistTracks(playlistID);
-            return createTracksOverview(tracks);
+            return getPlaylistTracks(playlistID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

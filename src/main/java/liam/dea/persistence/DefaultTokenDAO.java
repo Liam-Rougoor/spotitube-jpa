@@ -40,34 +40,36 @@ public class DefaultTokenDAO implements TokenDAO {
         }
     }
 
-    @Override
-    public String getTokenOfUser(String username){
-        try (
-                Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM token WHERE user = ?");
-        ) {
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            String token = "";
-            if (resultSet.next()) {
-                token = resultSet.getString("token");
-            }
-            return token;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Override
+//    public String getTokenOfUser(String username){
+//        try (
+//                Connection connection = new DatabaseConnectionFactory().createConnection();
+//                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM token WHERE user = ?");
+//        ) {
+//            preparedStatement.setString(1, username);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            String token = "";
+//            if (resultSet.next()) {
+//                token = resultSet.getString("token");
+//            }
+//            return token;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
-    public void createNewTokenForUser(String username){
+    public String createNewTokenForUser(String username){
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO token VALUES(?, ?, ?)");
         ) {
-            preparedStatement.setString(1, UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            preparedStatement.setString(1, token);
             preparedStatement.setString(2, username);
             preparedStatement.setDate(3, Date.valueOf(LocalDate.now())); //TODO set proper date
             preparedStatement.execute();
+            return token;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,6 +91,6 @@ public class DefaultTokenDAO implements TokenDAO {
 
     @Override
     public Login getLogin(String user){
-        return new Login(userDAO.getUserByName(user).getName(), getTokenOfUser(user));
+        return new Login(userDAO.getUserByName(user).getName(), createNewTokenForUser(user));
     }
 }

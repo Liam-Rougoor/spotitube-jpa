@@ -7,9 +7,9 @@ public interface PlaylistService {
 
     PlaylistsOverview getPlaylistsOverview(String username);
 
-    void deletePlaylist(int id);
+    Playlist deletePlaylist(int id);
 
-    void createPlaylist(Playlist playlist, String username);
+    Playlist createPlaylist(Playlist playlist, String username);
 
-    void editPlaylist(Playlist playlist);
+    Playlist editPlaylist(Playlist playlist);
 }

@@ -8,9 +8,9 @@ import java.util.List;
 public interface TrackDAO {
     Track getTrackByID(int id);
 
-    List<Track> getPlaylistTracks(int playlistID);
+    TracksOverview getPlaylistTracks(int playlistID);
 
-    List<Track> getAvailableTracks(int playlistID);
+    TracksOverview getAvailableTracks(int playlistID);
 
     TracksOverview addTrack(int playlistId, Track track);
 

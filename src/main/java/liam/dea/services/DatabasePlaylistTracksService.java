@@ -23,12 +23,12 @@ public class DatabasePlaylistTracksService implements PlaylistTracksService {
 
     @Override
     public TracksOverview getPlaylistTracksOverview(int playlistID) {
-        return new TracksOverview(trackDAO.getPlaylistTracks(playlistID));
+        return trackDAO.getPlaylistTracks(playlistID);
     }
 
     @Override
     public TracksOverview getAvailableTracksOverview(int playlistID) {
-        return new TracksOverview(trackDAO.getAvailableTracks(playlistID));
+        return trackDAO.getAvailableTracks(playlistID);
     }
 
     @Override

@@ -5,9 +5,9 @@ import liam.dea.dataobjects.Login;
 public interface TokenDAO {
     String getUserWithToken(String token);
 
-    String getTokenOfUser(String username);
+    //String getTokenOfUser(String username);
 
-    void createNewTokenForUser(String username);
+    String createNewTokenForUser(String username);
 
     boolean tokenIsValid(String token);
 

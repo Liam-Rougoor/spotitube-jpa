@@ -26,17 +26,17 @@ public class DatabasePlaylistService implements PlaylistService {
     }
 
     @Override
-    public void deletePlaylist(int id) {
-        playlistDAO.deletePlaylist(id);
+    public Playlist deletePlaylist(int id) {
+        return playlistDAO.deletePlaylist(id);
     }
 
     @Override
-    public void createPlaylist(Playlist playlist, String username) {
-        playlistDAO.addPlaylist(playlist, username);
+    public Playlist createPlaylist(Playlist playlist, String username) {
+        return playlistDAO.createPlaylist(playlist, username);
     }
 
     @Override
-    public void editPlaylist(Playlist playlist) {
-        playlistDAO.editPlaylist(playlist);
+    public Playlist editPlaylist(Playlist playlist) {
+        return playlistDAO.editPlaylist(playlist);
     }
 }

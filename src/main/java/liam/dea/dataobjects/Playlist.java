@@ -12,23 +12,9 @@ public class Playlist {
     private List<Track> tracks;
     private boolean owner;
 
-//    public Playlist(int id, String name, String user) {
-//        this.id = id;
-//        this.name = name;
-//        this.user = user;
-//        tracks = TrackStore.getInstance().getTracks();
-//    }
-
     public Playlist() {
         tracks = new ArrayList<>();
     }
-
-//    public Playlist(int id) {
-//        this.id = id;
-//        this.name = "Playlist " + id;
-//        this.user = "liam1";
-//        tracks = TrackStore.getInstance().getTracks();
-//    }
 
     public int getId() {
         return id;

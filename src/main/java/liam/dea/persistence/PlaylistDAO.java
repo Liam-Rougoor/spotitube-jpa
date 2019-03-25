@@ -12,7 +12,7 @@ public interface PlaylistDAO {
 
     Playlist deletePlaylist(int id);
 
-    Playlist addPlaylist(Playlist playlist, String user);
+    Playlist createPlaylist(Playlist playlist, String user);
 
     Playlist editPlaylist(Playlist playlist);
 

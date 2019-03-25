@@ -2,7 +2,8 @@ package liam.dea.resources;
 
 import liam.dea.dataobjects.Track;
 import liam.dea.dataobjects.TracksOverview;
-import liam.dea.persistence.TrackDAO;
+import liam.dea.services.PlaylistTracksService;
+import liam.dea.services.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,43 +16,41 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TrackResourceTest {
+class TrackResourceTest {
 
     @Mock
-    private TrackDAO trackDAOStub;
+    private TokenService tokenServiceStub;
+
+    @Mock
+    private PlaylistTracksService playlistTracksServiceStub;
+
+    private TracksOverview tracksOverview;
+    private List<Track> tracks;
 
     @InjectMocks
     private TrackResource systemUnderTest;
 
-    private List<Track> tracksStub;
-    private TracksOverview tracksOverviewStub;
-    private Track trackStub;
-
     @BeforeEach
     void setUp() {
-        tracksStub = new ArrayList<>();
-        trackStub = new Track();
-        trackStub.setId(1);
-        trackStub.setTitle("Track 1");
-        tracksStub.add(trackStub);
-        tracksOverviewStub = new TracksOverview(tracksStub);
+        tracks = new ArrayList<>();
+        Track track = new Track();
+        track.setId(1);
+        track.setTitle("Test Track");
+        tracks.add(track);
+        tracksOverview = new TracksOverview(tracks);
     }
 
     @Test
-    void returnsTracksAndStatusOKWhenSuccess() {
-        int playlistID = 1;
-        String token = "123";
-        Mockito.when(trackDAOStub.getAvailableTracks(playlistID)).thenReturn(tracksStub);
-        Mockito.when(trackDAOStub.createTracksOverview(tracksStub)).thenReturn(tracksOverviewStub);
+    void returnStatusOKAndTracksOverviewWhenSuccess() {
+        Mockito.when(tokenServiceStub.validateToken("1234")).thenReturn(true);
+        Mockito.when(playlistTracksServiceStub.getAvailableTracksOverview(1)).thenReturn(tracksOverview);
 
-        Response response = systemUnderTest.getAvailableTracksForPlaylist(playlistID, token);
+        Response response = systemUnderTest.getAvailableTracksForPlaylist(1, "1234");
         assertEquals(Response.Status.OK, response.getStatusInfo());
-        TracksOverview actualTracksOverview = (TracksOverview) response.getEntity();
-        Track actualTrack = actualTracksOverview.getTracks().get(0);
-        assertEquals(trackStub.getId(), actualTrack.getId());
-        assertEquals(trackStub.getTitle(), actualTrack.getTitle());
+        assertEquals(tracksOverview, response.getEntity());
     }
+
 }

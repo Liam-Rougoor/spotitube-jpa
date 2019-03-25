@@ -20,10 +20,11 @@ public class DatabaseTokenService implements TokenService {
     }
 
     @Override
-    public void validateToken(String token) {
+    public boolean validateToken(String token) {
         if (!tokenDAO.tokenIsValid(token)) {
             throw new InvalidTokenException();
         }
+        return true;
     }
 
     @Override
