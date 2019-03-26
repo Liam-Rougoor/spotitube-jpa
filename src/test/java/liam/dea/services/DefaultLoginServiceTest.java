@@ -10,10 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
-class DatabaseLoginServiceTest {
+class DefaultLoginServiceTest {
 
     @Mock
     private UserDAO userDAOStub;
@@ -23,13 +21,13 @@ class DatabaseLoginServiceTest {
 
 
     @InjectMocks
-    private DatabaseLoginService systemUnderTest;
+    private DefaultLoginService systemUnderTest;
 
     @Test
     void callsGetLogin() {
         User user = new User();
         user.setUser("liam");
-        Mockito.when(userDAOStub.getUserByNameAndPassword("liam", "pass")).thenReturn(user);
+        Mockito.when(userDAOStub.getUserByUsernameAndPassword("liam", "pass")).thenReturn(user);
         systemUnderTest.getLogin("liam","pass");
         Mockito.verify(tokenDAOMock).getLogin("liam");
     }

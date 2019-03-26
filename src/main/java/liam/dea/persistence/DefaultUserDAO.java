@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class DefaultUserDAO implements UserDAO {
 
     @Override
-    public User getUserByName(String name) {
+    public User getUserByUsername(String name) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ?");
@@ -31,7 +31,7 @@ public class DefaultUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUserByNameAndPassword(String name, String password) {
+    public User getUserByUsernameAndPassword(String name, String password) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ? AND password = ?");

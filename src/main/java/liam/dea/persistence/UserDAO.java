@@ -3,7 +3,7 @@ package liam.dea.persistence;
 import liam.dea.dataobjects.User;
 
 public interface UserDAO {
-    User getUserByName(String name);
+    User getUserByUsername(String name);
 
-    User getUserByNameAndPassword(String name, String password);
+    User getUserByUsernameAndPassword(String name, String password);
 }

@@ -9,16 +9,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
-class DatabasePlaylistTracksServiceTest {
+class DefaultPlaylistTracksServiceTest {
 
     @Mock
     private TrackDAO trackDAOMock;
 
     @InjectMocks
-    private DatabasePlaylistTracksService systemUnderTest;
+    private DefaultPlaylistTracksService systemUnderTest;
 
     @Test
     void callsGetPlaylistTracks() {

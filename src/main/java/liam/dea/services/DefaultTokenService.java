@@ -7,15 +7,15 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 @Default
-public class DatabaseTokenService implements TokenService {
+public class DefaultTokenService implements TokenService {
 
     private TokenDAO tokenDAO;
 
-    public DatabaseTokenService() {
+    public DefaultTokenService() {
     }
 
     @Inject
-    public DatabaseTokenService(TokenDAO tokenDAO) {
+    public DefaultTokenService(TokenDAO tokenDAO) {
         this.tokenDAO = tokenDAO;
     }
 

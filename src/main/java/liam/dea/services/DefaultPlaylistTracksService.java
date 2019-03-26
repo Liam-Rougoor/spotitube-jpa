@@ -9,15 +9,15 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 @Default
-public class DatabasePlaylistTracksService implements PlaylistTracksService {
+public class DefaultPlaylistTracksService implements PlaylistTracksService {
 
     private TrackDAO trackDAO;
 
-    public DatabasePlaylistTracksService() {
+    public DefaultPlaylistTracksService() {
     }
 
     @Inject
-    public DatabasePlaylistTracksService(TrackDAO trackDAO) {
+    public DefaultPlaylistTracksService(TrackDAO trackDAO) {
         this.trackDAO = trackDAO;
     }
 

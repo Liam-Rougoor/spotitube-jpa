@@ -10,13 +10,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class DatabasePlaylistServiceTest {
+class DefaultPlaylistServiceTest {
 
     @Mock
     private PlaylistDAO playlistDAOMock;
 
     @InjectMocks
-    private DatabasePlaylistService systemUnderTest;
+    private DefaultPlaylistService systemUnderTest;
 
     @Test
     void callsGetPlaylistOverview() {

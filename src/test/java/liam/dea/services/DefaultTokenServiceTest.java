@@ -12,13 +12,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class DatabaseTokenServiceTest {
+class DefaultTokenServiceTest {
 
     @Mock
     private TokenDAO tokenDAOMock;
 
     @InjectMocks
-    private DatabaseTokenService systemUnderTest;
+    private DefaultTokenService systemUnderTest;
 
     @Test
     void returnsTrueIfTokenIsValid() {

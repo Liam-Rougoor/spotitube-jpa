@@ -8,15 +8,15 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 @Default
-public class DatabasePlaylistService implements PlaylistService {
+public class DefaultPlaylistService implements PlaylistService {
 
     private PlaylistDAO playlistDAO;
 
-    public DatabasePlaylistService() {
+    public DefaultPlaylistService() {
     }
 
     @Inject
-    public DatabasePlaylistService(PlaylistDAO playlistDAO) {
+    public DefaultPlaylistService(PlaylistDAO playlistDAO) {
         this.playlistDAO = playlistDAO;
     }
 

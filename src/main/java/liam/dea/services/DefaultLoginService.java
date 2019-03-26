@@ -9,22 +9,22 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 @Default
-public class DatabaseLoginService implements LoginService {
+public class DefaultLoginService implements LoginService {
 
     private UserDAO userDAO;
     private TokenDAO tokenDAO;
 
-    public DatabaseLoginService(){}
+    public DefaultLoginService(){}
 
     @Inject
-    public DatabaseLoginService(UserDAO userDAO, TokenDAO tokenDAO) {
+    public DefaultLoginService(UserDAO userDAO, TokenDAO tokenDAO) {
         this.userDAO = userDAO;
         this.tokenDAO = tokenDAO;
     }
 
     @Override
     public Login getLogin(String user, String password) {
-        User foundUser = userDAO.getUserByNameAndPassword(user, password);
+        User foundUser = userDAO.getUserByUsernameAndPassword(user, password);
         return tokenDAO.getLogin(foundUser.getUser());
     }
 }
