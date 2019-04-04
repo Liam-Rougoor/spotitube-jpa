@@ -1,0 +1,8 @@
+<tomee>
+    <Resource id="spotitube" type="DataSource">
+        JdbcDriver com.mysql.jdbc.Driver
+        JdbcUrl jdbc:mysql://localhost:3306/spotitube?useSSL=false&#038;serverTimezone=UTC
+        UserName spotitube
+        Password avGU0e36EHl6NbuG
+    </Resource>
+</tomee>

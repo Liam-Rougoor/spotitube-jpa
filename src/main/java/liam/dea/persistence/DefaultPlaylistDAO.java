@@ -1,9 +1,8 @@
 package liam.dea.persistence;
 
-import liam.dea.exceptions.InvalidTokenException;
-import liam.dea.exceptions.DatabaseItemNotFoundException;
 import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.PlaylistsOverview;
+import liam.dea.exceptions.DatabaseItemNotFoundException;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -31,7 +30,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     public List<Playlist> getAllPlaylists(String currentUser) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist")
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
@@ -51,7 +50,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
                 PreparedStatement playlistStatement = connection.prepareStatement("SELECT * FROM playlist WHERE id = ?");
-                PreparedStatement playlistTrackStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
+                PreparedStatement playlistTrackStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?")
         ) {
             playlistStatement.setInt(1, id);
             ResultSet playlistSet = playlistStatement.executeQuery();
@@ -75,7 +74,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     public Playlist deletePlaylist(int id) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement deletePlaylistStatement = connection.prepareStatement("DELETE FROM playlist WHERE id = ?");
+                PreparedStatement deletePlaylistStatement = connection.prepareStatement("DELETE FROM playlist WHERE id = ?")
         ) {
             Playlist playlist = getPlaylistByID(id);
             deletePlaylistStatement.setInt(1, id);
@@ -112,7 +111,7 @@ public class DefaultPlaylistDAO implements PlaylistDAO {
     public Playlist editPlaylist(Playlist playlist) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement updateStatement = connection.prepareStatement("UPDATE playlist SET name = ? WHERE id = ?");
+                PreparedStatement updateStatement = connection.prepareStatement("UPDATE playlist SET name = ? WHERE id = ?")
         ) {
             updateStatement.setString(1, playlist.getName());
             updateStatement.setInt(2, playlist.getId());

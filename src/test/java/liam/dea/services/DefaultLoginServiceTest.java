@@ -28,7 +28,7 @@ class DefaultLoginServiceTest {
         User user = new User();
         user.setUser("liam");
         Mockito.when(userDAOStub.getUserByUsernameAndPassword("liam", "pass")).thenReturn(user);
-        systemUnderTest.getLogin("liam","pass");
+        systemUnderTest.getLogin("liam", "pass");
         Mockito.verify(tokenDAOMock).getLogin("liam");
     }
 }

@@ -4,7 +4,8 @@ public class User {
 
     private String user, password, name;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String user, String password, String name) {
         this.user = user;
@@ -14,6 +15,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUser() {
@@ -32,16 +37,12 @@ public class User {
         this.password = password;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
 //    @Override
 //    public boolean equals(Object obj) {
 //        User other = (User)obj;
 //        if(other == null){
 //            return false;
 //        }
-//        return other.user.equals(user) && other.password.equals(password);
+//        return other.user.equals(user) && other.expireDate.equals(expireDate);
 //    }
 }

@@ -14,7 +14,8 @@ public class DefaultLoginService implements LoginService {
     private UserDAO userDAO;
     private TokenDAO tokenDAO;
 
-    public DefaultLoginService(){}
+    public DefaultLoginService() {
+    }
 
     @Inject
     public DefaultLoginService(UserDAO userDAO, TokenDAO tokenDAO) {

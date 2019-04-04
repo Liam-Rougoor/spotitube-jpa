@@ -1,15 +1,21 @@
 package liam.dea.resources;
 
-import liam.dea.dataobjects.*;
-import liam.dea.services.TokenService;
+import liam.dea.dataobjects.Playlist;
+import liam.dea.dataobjects.Track;
+import liam.dea.dataobjects.TracksOverview;
 import liam.dea.services.PlaylistService;
 import liam.dea.services.PlaylistTracksService;
+import liam.dea.services.TokenService;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@Stateless
+@Transactional
 @Path("/playlists")
 public class PlaylistResource {
 

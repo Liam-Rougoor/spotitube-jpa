@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 public class HomeResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response home(){
+    public Response home() {
         return Response.ok("Hello World").build();
     }
 }

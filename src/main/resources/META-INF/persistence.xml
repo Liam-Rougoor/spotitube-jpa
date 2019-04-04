@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="persistenceUnit" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jpa-test</jta-data-source>
+        <class>liam.dea.dataobjects.Login</class>
+        <class>liam.dea.dataobjects.Playlist</class>
+        <class>liam.dea.dataobjects.PlaylistsOverview</class>
+        <class>liam.dea.dataobjects.Track</class>
+        <class>liam.dea.dataobjects.TracksOverview</class>
+        <class>liam.dea.dataobjects.User</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/jpa-test?useSSL=false&#038;serverTimezone=UTC"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="spotitube"/>
+            <property name="javax.persistence.jdbc.expireDate" value="avGU0e36EHl6NbuG"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
+            <!--<property name="eclipselink.ddl-generation" value="create-tables" />-->
+            <!--<property name="eclipselink.ddl-generation.output-mode" value="database" />-->
+        </properties>
+    </persistence-unit>
+</persistence>

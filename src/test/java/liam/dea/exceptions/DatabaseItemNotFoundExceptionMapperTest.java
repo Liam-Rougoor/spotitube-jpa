@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DatabaseItemNotFoundExceptionMapperTest {
 

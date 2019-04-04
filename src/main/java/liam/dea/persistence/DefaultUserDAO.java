@@ -1,8 +1,8 @@
 package liam.dea.persistence;
 
+import liam.dea.dataobjects.User;
 import liam.dea.exceptions.DatabaseItemNotFoundException;
 import liam.dea.exceptions.InvalidCredentialsException;
-import liam.dea.dataobjects.User;
 
 import javax.enterprise.inject.Default;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ public class DefaultUserDAO implements UserDAO {
     public User getUserByUsername(String name) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ?")
         ) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -34,7 +34,7 @@ public class DefaultUserDAO implements UserDAO {
     public User getUserByUsernameAndPassword(String name, String password) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ? AND password = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ? AND password = ?")
         ) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, password);
