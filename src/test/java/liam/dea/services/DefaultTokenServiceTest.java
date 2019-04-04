@@ -9,7 +9,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultTokenServiceTest {
@@ -29,10 +30,10 @@ class DefaultTokenServiceTest {
     @Test
     void throwsInvalidTokenExceptionIfTokenIsInvalid() {
         Mockito.when(tokenDAOMock.tokenIsValid("1234")).thenReturn(false);
-        try{
+        try {
             systemUnderTest.validateToken("1234");
             fail();
-        }catch (InvalidTokenException exception){
+        } catch (InvalidTokenException exception) {
         }
     }
 

@@ -1,12 +1,10 @@
 package liam.dea.persistence;
 
-import liam.dea.exceptions.DatabaseItemNotFoundException;
-import liam.dea.dataobjects.Playlist;
 import liam.dea.dataobjects.Track;
 import liam.dea.dataobjects.TracksOverview;
+import liam.dea.exceptions.DatabaseItemNotFoundException;
 
 import javax.enterprise.inject.Default;
-import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +19,7 @@ public class DefaultTrackDAO implements TrackDAO {
     public Track getTrackByID(int id) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM track WHERE id = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM track WHERE id = ?")
         ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -47,7 +45,7 @@ public class DefaultTrackDAO implements TrackDAO {
     public TracksOverview getPlaylistTracks(int playlistID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM playlist_track WHERE playlist = ?")
         ) {
             preparedStatement.setInt(1, playlistID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -74,7 +72,7 @@ public class DefaultTrackDAO implements TrackDAO {
                                 "SELECT track " +
                                 "FROM playlist_track " +
                                 "where playlist = ? " +
-                                ") ");
+                                ") ")
         ) {
             preparedStatement.setInt(1, playlistID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -92,7 +90,7 @@ public class DefaultTrackDAO implements TrackDAO {
     public TracksOverview addTrack(int playlistId, Track track) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?, ?)");
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO playlist_track VALUES(?, ?, ?)")
         ) {
             Track foundTrack = getTrackByID(track.getId());
             insertStatement.setInt(1, playlistId);
@@ -110,7 +108,7 @@ public class DefaultTrackDAO implements TrackDAO {
     public TracksOverview removeTrack(int playlistID, int trackID) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement removeStatement = connection.prepareStatement("DELETE FROM playlist_track where playlist = ? AND track = ?");
+                PreparedStatement removeStatement = connection.prepareStatement("DELETE FROM playlist_track where playlist = ? AND track = ?")
         ) {
             removeStatement.setInt(1, playlistID);
             removeStatement.setInt(2, trackID);

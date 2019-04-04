@@ -10,11 +10,11 @@ public class Login {
         this.token = token;
     }
 
-    public String getUser(){
+    public String getUser() {
         return user;
     }
 
-    public String getToken(){
+    public String getToken() {
         return token;
     }
 

@@ -2,7 +2,6 @@ package liam.dea.services;
 
 import liam.dea.dataobjects.Track;
 import liam.dea.dataobjects.TracksOverview;
-import liam.dea.persistence.DefaultTrackDAO;
 import liam.dea.persistence.TrackDAO;
 
 import javax.enterprise.inject.Default;

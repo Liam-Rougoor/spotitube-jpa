@@ -1,6 +1,5 @@
 package liam.dea.persistence;
 
-import javax.jms.ConnectionFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,7 +29,7 @@ public class DatabaseConnectionFactory {
         String propertiesPath = DatabaseConnectionFactory.class.getClassLoader().getResource("").getPath() + "database.properties";
         try
                 (
-                        FileInputStream fin = new FileInputStream(propertiesPath);
+                        FileInputStream fin = new FileInputStream(propertiesPath)
                 ) {
             properties.load(fin);
             return properties;

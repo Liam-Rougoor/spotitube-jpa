@@ -7,7 +7,7 @@ public class PlaylistsOverview {
 
     private List<Playlist> playlists;
 
-    public PlaylistsOverview(List<Playlist> playlists){
+    public PlaylistsOverview(List<Playlist> playlists) {
         this.playlists = playlists;
     }
 
@@ -17,7 +17,7 @@ public class PlaylistsOverview {
 
     public int getLength() {
         int length = 0;
-        for(Playlist playlist : playlists){
+        for (Playlist playlist : playlists) {
             length += playlist.getLength();
         }
         return length;

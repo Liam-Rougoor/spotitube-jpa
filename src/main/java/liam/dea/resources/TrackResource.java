@@ -1,8 +1,8 @@
 package liam.dea.resources;
 
 import liam.dea.dataobjects.TracksOverview;
-import liam.dea.services.TokenService;
 import liam.dea.services.PlaylistTracksService;
+import liam.dea.services.TokenService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -29,7 +29,7 @@ public class TrackResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAvailableTracksForPlaylist(@QueryParam("forPlaylist") int playlistID, @QueryParam("token") String token){
+    public Response getAvailableTracksForPlaylist(@QueryParam("forPlaylist") int playlistID, @QueryParam("token") String token) {
         tokenService.validateToken(token);
         TracksOverview tracksOverview = playlistTracksService.getAvailableTracksOverview(playlistID);
         return Response.ok(tracksOverview).build();

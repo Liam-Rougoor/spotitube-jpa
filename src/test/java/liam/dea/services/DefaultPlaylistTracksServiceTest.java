@@ -33,10 +33,10 @@ class DefaultPlaylistTracksServiceTest {
     @Test
     void callsRemoveTrack() {
         systemUnderTest.removeTrack(1, 1);
-        Mockito.verify(trackDAOMock).removeTrack(1,1);
+        Mockito.verify(trackDAOMock).removeTrack(1, 1);
 
         systemUnderTest.removeTrack(2, 2);
-        Mockito.verify(trackDAOMock).removeTrack(2,2);
+        Mockito.verify(trackDAOMock).removeTrack(2, 2);
     }
 
     @Test

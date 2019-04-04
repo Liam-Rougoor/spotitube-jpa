@@ -17,7 +17,8 @@ public class LoginResource {
 
     private LoginService loginService;
 
-    public LoginResource(){}
+    public LoginResource() {
+    }
 
     @Inject
     public LoginResource(LoginService loginService) {

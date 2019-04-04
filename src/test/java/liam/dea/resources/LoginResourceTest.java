@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class LoginResourceTest {
@@ -32,7 +32,7 @@ class LoginResourceTest {
 
         Login login = new Login("Liam Rougoor", "1234");
 
-        Mockito.when(loginServiceStub.getLogin("liam","pass")).thenReturn(login);
+        Mockito.when(loginServiceStub.getLogin("liam", "pass")).thenReturn(login);
 
 
         Response response = systemUnderTest.login(user);

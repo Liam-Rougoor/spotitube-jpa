@@ -1,7 +1,7 @@
 package liam.dea.persistence;
 
-import liam.dea.exceptions.InvalidTokenException;
 import liam.dea.dataobjects.Login;
+import liam.dea.exceptions.InvalidTokenException;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ public class DefaultTokenDAO implements TokenDAO {
     public String getUserWithToken(String token) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM token WHERE token = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM token WHERE token = ?")
         ) {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -41,10 +41,10 @@ public class DefaultTokenDAO implements TokenDAO {
     }
 
     @Override
-    public String createNewTokenForUser(String username){
+    public String createNewTokenForUser(String username) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO token VALUES(?, ?, ?)");
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO token VALUES(?, ?, ?)")
         ) {
             String token = UUID.randomUUID().toString();
             preparedStatement.setString(1, token);
@@ -61,10 +61,10 @@ public class DefaultTokenDAO implements TokenDAO {
     }
 
     @Override
-    public boolean tokenIsValid(String token){
+    public boolean tokenIsValid(String token) {
         try (
                 Connection connection = new DatabaseConnectionFactory().createConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM token WHERE token = ? AND CURDATE() < expire_date");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM token WHERE token = ? AND CURDATE() < expire_date")
         ) {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -75,7 +75,7 @@ public class DefaultTokenDAO implements TokenDAO {
     }
 
     @Override
-    public Login getLogin(String user){
+    public Login getLogin(String user) {
         return new Login(userDAO.getUserByUsername(user).getName(), createNewTokenForUser(user));
     }
 }
