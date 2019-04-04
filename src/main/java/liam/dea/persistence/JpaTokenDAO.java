@@ -1,12 +1,10 @@
 package liam.dea.persistence;
 
 import liam.dea.dataobjects.Login;
-import liam.dea.dataobjects.Token;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Alternative
@@ -25,28 +23,23 @@ public class JpaTokenDAO extends JpaDAO implements TokenDAO {
     @Override
     public String getUserWithToken(String token) {
         entityManager = super.createEntityManager();
-        Token foundToken = entityManager.find(Token.class, token);
-        return foundToken.getUser();
+        Login foundLogin = entityManager.find(Login.class, token);
+        return foundLogin.getUser();
     }
 
     @Override
     public String createNewTokenForUser(String username) {
         entityManager = super.createEntityManager();
-        Token token = new Token();
-        token.setToken(UUID.randomUUID().toString());
-        token.setUser(username);
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(2);
-        token.setExpireDate(tomorrow.toString());
-        entityManager.persist(token);
-        return token.getToken();
+        Login login = new Login(username, UUID.randomUUID().toString());
+        entityManager.persist(login);
+        return login.getToken();
     }
 
     @Override
     public boolean tokenIsValid(String token) {
         entityManager = super.createEntityManager();
-        Token foundToken = entityManager.find(Token.class, token);
-        return foundToken != null;
+        Login foundLogin = entityManager.find(Login.class, token);
+        return foundLogin != null;
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class PlaylistsOverview {
 
+
     private List<Playlist> playlists;
 
     public PlaylistsOverview(List<Playlist> playlists) {

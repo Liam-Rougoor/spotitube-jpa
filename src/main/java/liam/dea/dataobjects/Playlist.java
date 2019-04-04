@@ -1,14 +1,22 @@
 package liam.dea.dataobjects;
 
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Playlist {
 
+    @Id
     private int id;
     private String name;
     private String user;
+    @ManyToMany
+    @JoinTable( name = "playlist_track",
+                joinColumns = {@JoinColumn(name = "playlist")},
+                inverseJoinColumns = {@JoinColumn(name = "track")}
+    )
     private List<Track> tracks;
     private boolean owner;
 
